@@ -1,0 +1,5 @@
+langgraph
+langchain
+langchain-google-genai
+python-dotenv
+cryptography==41.0.7
