@@ -3,3 +3,5 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+get-pip.py
+questions_db.json
