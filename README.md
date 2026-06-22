@@ -1,44 +1,56 @@
 # ☕ Java Interview Coach
-### *An AI-powered interview prep agent built with LangChain + LangGraph + Groq*
+### *An AI-powered interview prep agent built with LangChain + LangGraph + Groq + RAG*
 
 ---
 
 ```
-  ╔══════════════════════════════════════════════════════╗
-  ║   Ask  →  Answer  →  Evaluate  →  Hint  →  Score   ║
-  ╚══════════════════════════════════════════════════════╝
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║   Search DB  →  Ask  →  Answer  →  Evaluate  →  Hint  →  Score ║
+  ╚══════════════════════════════════════════════════════════════════╝
 ```
 
 > **Stop cramming. Start practicing.**
-> Get real Java interview questions, instant AI feedback, and personalized weak-spot tracking — all in your terminal.
+> Get real Java interview questions from 600+ analyzed interviews, instant AI feedback, and personalized weak-spot tracking — all in a beautiful web UI.
 
 ---
 
 ## ✨ Features
 
-- 🎯 **Topic-based questions** — OOP, Collections, JVM, Spring Boot, Multithreading & more
+- 🎯 **RAG-powered questions** — 1,715 real questions sourced from 600 Java interviews on YouTube
+- 🔍 **Semantic search** — ChromaDB finds the most relevant question for your chosen topic
 - 🤖 **AI evaluation** — instant feedback + ideal answer after every response
-- 💡 **Hint system** — stuck? type `hint` instead of answering
+- 💡 **Hint system** — stuck? click "Get Hint" for a nudge without giving away the answer
 - 📊 **Live scoring** — track correct answers in real time
 - 📚 **Weak topic tracker** — see which topics to review at the end of each session
 - ⚡ **Powered by Groq** — blazing fast LLM responses (no OpenAI costs!)
+- 🌐 **Streamlit UI** — clean, interactive web interface
 
 ---
 
 ## 🧠 Architecture
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                   LangGraph Workflow                 │
-│                                                     │
-│   [START] → [Ask Question] → [Get Answer]           │
-│                                   ↓                 │
-│                           [Evaluate Answer]         │
-│                          ↙        ↓        ↘        │
-│                    [Hint]    [Next Q]    [End]       │
-│                       ↘        ↑                    │
-│                        └───────┘                    │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                      RAG Pipeline                           │
+│                                                             │
+│   1715 Java Questions (GitHub)                              │
+│          ↓ embedded via ChromaDB                            │
+│   Vector Store (ChromaDB)                                   │
+│          ↓ semantic search by topic                         │
+│   Relevant Question Retrieved                               │
+└─────────────────────────────────────────────────────────────┘
+                          ↓
+┌─────────────────────────────────────────────────────────────┐
+│                   LangGraph Workflow                         │
+│                                                             │
+│   [START] → [RAG: Get Question] → [User Answers]           │
+│                                         ↓                   │
+│                               [Evaluate Answer]             │
+│                              ↙      ↓        ↘             │
+│                        [Hint]  [Next Q]     [End]           │
+│                           ↘      ↑                          │
+│                            └─────┘                          │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 **Stack:**
@@ -46,9 +58,11 @@
 |---|---|
 | LLM | `llama-3.3-70b` via Groq |
 | Agent Framework | LangChain + LangGraph |
+| Vector Store | ChromaDB |
+| Question Bank | 1,715 questions from 600 real interviews |
 | State Management | LangGraph `TypedDict` state |
+| UI | Streamlit |
 | Environment | Python 3.11, uv |
-| Notebook | Jupyter in VS Code |
 
 ---
 
@@ -72,7 +86,7 @@ source .venv/bin/activate  # Mac/Linux
 # .venv\Scripts\activate   # Windows
 
 # Install dependencies
-uv pip install -r requirements.txt
+uv add -r requirements.txt
 ```
 
 ### Configuration
@@ -85,36 +99,51 @@ GROQ_API_KEY=your_groq_api_key_here
 
 > ⚠️ **Never commit your `.env` file.** It's already in `.gitignore`.
 
-### Run
+### Build the Question Bank
 
-Open `main.ipynb` in VS Code, select the `.venv` kernel, and run all cells!
+Run all cells in `rag.ipynb` once to fetch and store questions in ChromaDB:
+
+```bash
+# Open in VS Code and run all cells
+code rag.ipynb
+```
+
+This fetches 1,715 questions from GitHub and stores them as vector embeddings locally.
+
+### Run the App
+
+```bash
+.venv/bin/streamlit run app.py
+```
+
+Opens at `http://localhost:8501` 🚀
 
 ---
 
 ## 🎮 How to Use
 
 ```
-🎯 Java Interview Coach
+☕ Java Interview Coach
 
-Enter a topic: Spring Boot
+Choose a topic: Spring
 
-📌 Question 1:
-What is the purpose of @ComponentScan in Spring Boot?
+📌 Question:
+What is Dependency Injection in Spring?
 
-Your answer (or type 'hint'): hint
+Your answer: [type here]
+
+[✅ Submit Answer]  [💡 Get Hint]
 
 💡 Hint:
-Think about how Spring Boot knows which classes to register as beans...
-
-Now your answer: It tells Spring where to look for components and beans to register
+Think about how Spring manages object creation and
+how components get their dependencies...
 
 💬 Feedback:
-CORRECT! Great answer. @ComponentScan tells Spring Boot which packages
-to scan for @Component, @Service, @Repository annotations...
+CORRECT! Dependency Injection is a design pattern where
+Spring manages object creation and injects dependencies
+automatically via @Autowired or constructor injection...
 
-⭐ Score: 1/1
-
-Next question? (y/n): y
+⭐ Score: 3/4        [➡️ Next Question]
 ```
 
 ---
@@ -124,8 +153,10 @@ Next question? (y/n): y
 ```
 java-interview-coach/
 │
-├── main.ipynb              # Main notebook — run this!
-├── requirements.txt        # Python dependencies
+├── app.py                  # Streamlit web UI
+├── main.ipynb              # Agent notebook (LangGraph flow)
+├── rag.ipynb               # RAG setup — fetch + embed questions
+├── pyproject.toml          # Project config
 ├── uv.lock                 # Locked dependency versions
 ├── .env                    # API keys (never commit!)
 ├── .gitignore
@@ -147,7 +178,8 @@ java-interview-coach/
 - [x] LangGraph state + workflow
 - [x] Hint system
 - [x] Weak topic tracker
-- [ ] Streamlit UI
+- [x] RAG with ChromaDB — 1,715 real interview questions
+- [x] Streamlit web UI
 - [ ] Multi-session memory (persist weak topics across sessions)
 - [ ] Deploy to Hugging Face Spaces
 
@@ -158,6 +190,8 @@ java-interview-coach/
 - [LangChain](https://python.langchain.com/) — LLM orchestration
 - [LangGraph](https://langchain-ai.github.io/langgraph/) — Agentic workflow graph
 - [Groq](https://groq.com/) — Fast, free LLM inference
+- [ChromaDB](https://www.trychroma.com/) — Vector store for semantic search
+- [Streamlit](https://streamlit.io/) — Web UI framework
 - [python-dotenv](https://pypi.org/project/python-dotenv/) — Environment management
 - [uv](https://github.com/astral-sh/uv) — Fast Python package manager
 
@@ -174,6 +208,8 @@ Java/Spring Boot Developer | AI/ML Learner
 <div align="center">
 
 *Built as part of a hands-on AI/ML learning journey*
-*From LangChain basics → LangGraph agents → Production deployment*
+*From LangChain basics → LangGraph agents → RAG → Production deployment*
+
+☕ **Practice daily. Land the role.**
 
 </div>
