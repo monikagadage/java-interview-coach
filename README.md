@@ -163,10 +163,17 @@ java-interview-coach/
 
 ---
 
+## 👩‍💻 Author
+
+**Monika Gadage**
+Java/Spring Boot Developer | AI/ML Learner
+[GitHub](https://github.com/monikagadage)
 
 ---
 
 <div align="center">
 
+*Built as part of a hands-on AI/ML learning journey*
+*From LangChain basics → LangGraph agents → Production deployment*
 
 </div>
