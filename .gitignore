@@ -5,3 +5,4 @@ __pycache__/
 .ipynb_checkpoints/
 get-pip.py
 questions_db.json
+interview_history.db
