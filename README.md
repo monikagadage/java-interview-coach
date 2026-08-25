@@ -22,6 +22,9 @@
 - 💡 **Hint system** — stuck? click "Get Hint" for a nudge without giving away the answer
 - 📊 **Live scoring** — track correct answers in real time
 - 📚 **Weak topic tracker** — see which topics to review at the end of each session
+- 🗄️ **Cross-session persistence** — every answer is saved to a local SQLite database, so weak-topic tracking and scoring accumulate across your whole practice history, not just one sitting
+- 📈 **Difficulty-adaptive selection** — a ranking layer on top of RAG retrieval that leans toward your weaker topics and raises/lowers question difficulty based on your saved accuracy per topic
+- 📄 **Exportable session report** — download a Markdown report of any session (questions, your answers, ideal answers, scores, weak topics) straight from the sidebar
 - ⚡ **Powered by Groq** — blazing fast LLM responses (no OpenAI costs!)
 - 🌐 **Streamlit UI** — clean, interactive web interface
 
@@ -36,8 +39,10 @@
 │   1715 Java Questions (GitHub)                              │
 │          ↓ embedded via ChromaDB                            │
 │   Vector Store (ChromaDB)                                   │
-│          ↓ semantic search by topic                         │
-│   Relevant Question Retrieved                               │
+│          ↓ semantic search by topic (~12 candidates)        │
+│   Difficulty-Adaptive Selection (graph/selection.py)         │
+│          ↓ ranked by saved per-topic accuracy                │
+│   Question Selected                                          │
 └─────────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────────┐
@@ -50,6 +55,10 @@
 │                        [Hint]  [Next Q]     [End]           │
 │                           ↘      ↑                          │
 │                            └─────┘                          │
+│                     ↓ every evaluated answer                │
+│              SQLite (memory/store.py)                        │
+│                     ↓                                        │
+│          Cumulative Stats + Markdown Report                  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -61,6 +70,7 @@
 | Vector Store | ChromaDB |
 | Question Bank | 1,715 questions from 600 real interviews |
 | State Management | LangGraph `TypedDict` state |
+| Persistence | SQLite (stdlib `sqlite3`, no ORM) |
 | UI | Streamlit |
 | Environment | Python 3.11, uv |
 
@@ -146,6 +156,13 @@ automatically via @Autowired or constructor injection...
 ⭐ Score: 3/4        [➡️ Next Question]
 ```
 
+The sidebar also shows your **all-time progress** ("You've answered 47 questions
+across 6 sessions, weakest topics: ...") pulled from the local SQLite history, and
+a **📄 Export Session Report** button that downloads a Markdown summary of the
+current session (questions, your answers, ideal answers, scores, weak topics).
+Pick **🎯 Auto (focus on my weak topics)** as the topic to let the app weight
+topic selection toward whatever you've historically gotten wrong.
+
 ---
 
 ## 📁 Project Structure
@@ -154,20 +171,22 @@ automatically via @Autowired or constructor injection...
 java-interview-coach/
 │
 ├── app.py                  # Streamlit web UI
+├── report.py                # Exportable Markdown session report
 ├── main.ipynb              # Agent notebook (LangGraph flow)
 ├── rag.ipynb               # RAG setup — fetch + embed questions
 ├── pyproject.toml          # Project config
 ├── uv.lock                 # Locked dependency versions
 ├── .env                    # API keys (never commit!)
+├── interview_history.db     # SQLite practice history (gitignored, auto-created)
 ├── .gitignore
 │
 ├── graph/
-│   ├── state.py            # LangGraph shared state definition
-│   └── workflow.py         # Agent nodes + graph wiring
+│   ├── state.py             # LangGraph shared state definition
+│   ├── workflow.py          # Agent nodes (RAG get-question, evaluate, hint) + graph wiring
+│   └── selection.py         # Difficulty-adaptive ranking layer on top of RAG retrieval
 │
-├── agents/                 # (Phase 2 — individual agents)
-├── tools/                  # (Phase 2 — custom tools)
-└── memory/                 # (Phase 2 — session persistence)
+└── memory/
+    └── store.py              # SQLite persistence — questions, correctness, topic, timestamp
 ```
 
 ---
@@ -180,7 +199,9 @@ java-interview-coach/
 - [x] Weak topic tracker
 - [x] RAG with ChromaDB — 1,715 real interview questions
 - [x] Streamlit web UI
-- [ ] Multi-session memory (persist weak topics across sessions)
+- [x] Multi-session memory (persist weak topics + scores across sessions via SQLite)
+- [x] Difficulty-adaptive question selection based on saved per-topic accuracy
+- [x] Exportable Markdown session report
 - [ ] Deploy to Hugging Face Spaces
 
 ---
