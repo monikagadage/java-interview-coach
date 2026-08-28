@@ -126,6 +126,24 @@ attempts(id INTEGER PRIMARY KEY AUTOINCREMENT,
 | `main.ipynb` — original exploratory notebook for the ask→evaluate chain (uses a plain per-call `question_chain`, no RAG, no persistence, no difficulty adaptation). Superseded by the app; kept for reference only, not imported anywhere. | `graph/selection.py` — difficulty-adaptive ranking, used by `workflow.py`'s `ask` node. |
 | `graph/state.ipynb`, `graph/workflow.ipynb` — earlier sketches of the same state/workflow shape; `graph/state.py` and `graph/workflow.py` are the promoted, actually-imported versions. | `memory/store.py` — SQLite persistence, used by `workflow.py`, `selection.py`, `app.py`, and `report.py`. |
 
+## Tests
+
+`tests/test_store.py` and `tests/test_selection.py` are real `pytest` tests (28 total, all
+passing as of this writing — run `uv run pytest tests/ -v` to reproduce), added in round 2.
+They replace round 1's manual-script verification for these two modules:
+
+- `test_store.py` exercises `memory/store.py` end to end against a fresh temp SQLite file
+  per test (`tmp_path`, via the `db_path` parameter every `store` function already accepts)
+  — session creation, attempt recording, cumulative/topic accuracy math, weakest-topic
+  ordering and the >=2-attempts threshold, and the recent-questions anti-repeat query.
+- `test_selection.py` exercises `graph/selection.py`'s difficulty heuristic, the
+  target-difficulty logic (default 0.35 under 3 attempts vs. accuracy-driven above it), the
+  recently-asked filter and its fall-back-to-full-pool behavior, and `pick_topic_for_auto_mode`'s
+  weighting. No ChromaDB client is created or mocked for these — `selection.py` never imports
+  `chromadb` itself; it operates purely on the `list[str]` of candidates the caller already
+  retrieved, so the tests just build that list as a fixture directly.
+- Neither test file requires `GROQ_API_KEY`, network access, or `questions_db.json`.
+
 ## Known limitations
 
 - **Not tested against a live Groq key in this environment.** `evaluate` and `hint` both

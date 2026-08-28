@@ -41,6 +41,18 @@ uv run streamlit run app.py
 Opens at `http://localhost:8501`. Pick a topic (or **Auto**, which weights toward your
 weaker topics), answer, and check the sidebar for live and all-time progress.
 
+## Tests
+
+```bash
+uv run pytest tests/ -v
+```
+
+28 tests cover `memory/store.py` (session/attempt CRUD, cumulative stats, recent-question
+filtering, all against temp SQLite files) and `graph/selection.py` (difficulty heuristic,
+difficulty re-ranking, recently-asked filtering, auto-topic weighting). No ChromaDB
+instance, Groq key, or network access is needed to run them — `selection.py` operates on
+plain candidate lists, not a live vector store.
+
 ## Tech Stack
 
 | Layer | Tech |
@@ -65,6 +77,9 @@ graph/
   selection.py       # Difficulty-adaptive re-ranking on top of RAG retrieval
 memory/
   store.py           # SQLite persistence for sessions/attempts + stats
+tests/
+  test_store.py       # memory/store.py: CRUD + cumulative stats, temp SQLite
+  test_selection.py    # graph/selection.py: difficulty ranking, recency filter
 ```
 
 ## Author
