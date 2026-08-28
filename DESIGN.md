@@ -4,8 +4,9 @@ Architecture and data model for Java Interview Coach. See [README.md](README.md)
 
 ## Architecture overview
 
-Two pipelines feed into a Streamlit UI that drives a LangGraph-style workflow one button
-click at a time.
+Two pipelines feed into two interchangeable UIs (Streamlit's `app.py`, or `cli.py`'s stdin
+loop) that each drive the exact same LangGraph-style workflow — one button click, or one
+`input()` call, at a time.
 
 ```mermaid
 flowchart TD
@@ -13,22 +14,33 @@ flowchart TD
         GH[GitHub question list] -->|parse into topics| JSON[questions_db.json]
     end
 
-    subgraph app["App runtime (app.py)"]
-        JSON -->|"embedded on first run\n(ChromaDB default embedder)"| Chroma[(ChromaDB\nin-memory collection)]
+    subgraph shared["Shared business logic"]
+        JSON -->|"embedded on first run\n(ChromaDB default embedder)"| Chroma["corpus.py\nload_collection()"]
         Chroma -->|"query_texts=[topic]\nn_results=12"| Candidates[Candidate pool]
         Candidates --> Selection[graph/selection.py\nselect_question]
         Stats[(SQLite\nmemory/store.py)] -->|per-topic accuracy,\nrecent questions| Selection
         Selection --> Ask["ask node\n(graph/workflow.py)"]
-        Ask --> UI[Streamlit: show question]
-        UI --> Evaluate["evaluate node\n(Groq LLM)"]
+        Ask --> Evaluate["evaluate node\n(Groq LLM)"]
         Evaluate -->|record_attempt| Stats
         Evaluate --> Hint["hint node\n(Groq LLM, optional)"]
-        Evaluate --> UI2[Streamlit: feedback + score]
-        UI2 -->|"Again/Hard/Good/Easy"| Rate["record_review\n(memory/store.py)"]
-        Rate --> Reviews[(SQLite: reviews)]
+        Rate["record_review\n(memory/store.py)"] --> Reviews[(SQLite: reviews)]
         Reviews -->|"get_due_questions\n(Due for Review mode)"| Ask
+    end
+
+    subgraph streamlit["app.py (Streamlit)"]
+        Ask --> UI[Show question]
+        UI --> Evaluate
+        Evaluate --> UI2[Feedback + score]
+        UI2 -->|"Again/Hard/Good/Easy"| Rate
         Stats -->|get_cumulative_stats| Sidebar["Sidebar: All-Time Progress"]
         Stats -->|get_session_attempts| Report["report.py: Markdown export"]
+    end
+
+    subgraph cli["cli.py (stdin/stdout)"]
+        Ask --> Print[print question]
+        Print --> Input["input() answer"]
+        Input --> Evaluate
+        Evaluate --> Score[print feedback + score]
     end
 ```
 
@@ -149,6 +161,23 @@ rather than a reimplementation of one:
   regardless of mode, so any question — RAG-selected or due-for-review — feeds the same
   schedule.
 
+### CLI practice mode (round 2)
+
+`corpus.py` was extracted from `app.py` (the in-memory ChromaDB embed-on-first-use logic,
+byte-for-byte the same, just no longer wrapped in `@st.cache_resource`) so both UIs load
+the corpus the same way instead of `app.py` owning that step. `cli.py` then builds on top
+of exactly the same pieces `app.py` does — `graph.selection.pick_topic_for_auto_mode`,
+`graph.workflow.build_nodes` (so `graph/state.py`'s `InterviewState` shape and the
+`ask`/`evaluate` nodes), and `memory.store` for persistence — and drives them from a plain
+stdin/stdout loop instead of Streamlit button clicks. A CLI session and a Streamlit session
+share the same `interview_history.db`, so difficulty adaptation, weak-topic weighting, and
+cumulative stats carry over between the two.
+
+`cli.py` constructs `ChatGroq` itself (inside `main()`, not at import time, unlike
+`app.py`) so the failure point stays precise: retrieval/selection needs no API key at all,
+and only the `evaluate` node's actual network call does. See Known limitations below for
+exactly how far this was verified to run in this environment.
+
 ## Notebooks vs. real modules
 
 | Still notebook-only | Promoted to a real module |
@@ -182,13 +211,32 @@ They replace round 1's manual-script verification for these two modules:
   weighting. No ChromaDB client is created or mocked for these — `selection.py` never imports
   `chromadb` itself; it operates purely on the `list[str]` of candidates the caller already
   retrieved, so the tests just build that list as a fixture directly.
-- Neither test file requires `GROQ_API_KEY`, network access, or `questions_db.json`.
+- `test_cli.py` covers `cli.py`'s `_prompt_answer` helper (multi-line answers joined on
+  submit, EOF-with-no-input returning `None` so a scripted/piped session stops cleanly
+  instead of looping, EOF-mid-answer still submitting what was typed) by monkeypatching
+  `builtins.input`. It's the only I/O-free logic in `cli.py` — everything else in that file
+  does real ChromaDB/Groq I/O, so it's verified by hand instead (see Known limitations).
+- None of the three test files require `GROQ_API_KEY`, network access, or
+  `questions_db.json`.
 
 ## Known limitations
 
-- **Not tested against a live Groq key in this environment.** `evaluate` and `hint` both
-  require `GROQ_API_KEY` and a network call to Groq; nothing here exercised that path — only
-  `python3 -m py_compile` and static reading of the code were verified.
+- **`evaluate`/`hint` (both UIs) are not tested against a live Groq key in this
+  environment.** Verified as far as this environment allows:
+  - With no `GROQ_API_KEY` set at all, `cli.py` runs through argument parsing and
+    `corpus.load_collection()` (a fixture `questions_db.json` was used for this check, then
+    removed — it's gitignored and not part of the repo) successfully, and fails exactly at
+    `ChatGroq(...)` construction with a clear, caught error — proving retrieval/selection
+    needs no key at all, and pinpointing exactly where a key becomes required.
+  - With a dummy `GROQ_API_KEY` (passes construction, not a real key), `cli.py` and
+    `app.py` (via Streamlit's `AppTest` harness) both ran the full ask -> answer -> evaluate
+    path and failed exactly at the live Groq HTTP call (`groq.AuthenticationError: 401
+    Invalid API Key`) — confirming everything up to and including sending the request
+    works; only a genuine key was unavailable in this environment.
+  - `app.py`'s new "Due for Review" mode and rating buttons were exercised the same way via
+    `AppTest` and confirmed to work end-to-end against a real (temp) SQLite file, without
+    needing the evaluate step at all.
+  - No test here has exercised an actual Groq response being parsed into feedback/score.
 - **Ephemeral vector store.** `chromadb.Client()` is in-memory only; every fresh process
   re-embeds all 1,715 questions from `questions_db.json` at startup (cheap, but not
   persisted to disk as a Chroma index).

@@ -1,10 +1,8 @@
-import json
-
-import chromadb
 import streamlit as st
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 
+from corpus import load_collection
 from graph.workflow import build_nodes
 from graph.selection import pick_topic_for_auto_mode
 from memory import store
@@ -21,37 +19,9 @@ st.caption("Practice Java interview questions with AI feedback")
 llm = ChatGroq(model="llama-3.3-70b-versatile")
 
 # ── ChromaDB setup (RAG) ────────────────────────────────────
-@st.cache_resource
-def load_vector_db():
-    client = chromadb.Client()
-    collection = client.get_or_create_collection(name="java_questions")
-
-    # Only load if empty
-    if collection.count() == 0:
-        with open("questions_db.json", "r") as f:
-            questions_by_topic = json.load(f)
-
-        documents, metadatas, ids = [], [], []
-        idx = 0
-        for topic, qs in questions_by_topic.items():
-            for question in qs:
-                documents.append(question)
-                metadatas.append({"topic": topic})
-                ids.append(f"q_{idx}")
-                idx += 1
-
-        # Store in batches
-        batch_size = 100
-        for i in range(0, len(documents), batch_size):
-            collection.add(
-                documents=documents[i:i+batch_size],
-                metadatas=metadatas[i:i+batch_size],
-                ids=ids[i:i+batch_size]
-            )
-
-    return collection
-
-
+# The actual load/embed logic lives in corpus.py (shared with cli.py);
+# this just adds Streamlit's process-lifetime caching on top of it.
+load_vector_db = st.cache_resource(load_collection)
 collection = load_vector_db()
 
 # ── LangGraph nodes (RAG retrieval + adaptive selection -> evaluate -> hint) ──
