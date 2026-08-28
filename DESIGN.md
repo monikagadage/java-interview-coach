@@ -24,6 +24,9 @@ flowchart TD
         Evaluate -->|record_attempt| Stats
         Evaluate --> Hint["hint node\n(Groq LLM, optional)"]
         Evaluate --> UI2[Streamlit: feedback + score]
+        UI2 -->|"Again/Hard/Good/Easy"| Rate["record_review\n(memory/store.py)"]
+        Rate --> Reviews[(SQLite: reviews)]
+        Reviews -->|"get_due_questions\n(Due for Review mode)"| Ask
         Stats -->|get_cumulative_stats| Sidebar["Sidebar: All-Time Progress"]
         Stats -->|get_session_attempts| Report["report.py: Markdown export"]
     end
@@ -105,6 +108,12 @@ attempts(id INTEGER PRIMARY KEY AUTOINCREMENT,
          topic TEXT, question TEXT, answer TEXT, feedback TEXT,
          is_correct INTEGER, created_at TEXT)
 -- indexes on attempts(topic) and attempts(session_id)
+
+reviews(id INTEGER PRIMARY KEY AUTOINCREMENT,
+        topic TEXT, question TEXT, rating TEXT,
+        next_review_at TEXT, updated_at TEXT,
+        UNIQUE(topic, question))
+-- index on reviews(next_review_at)
 ```
 
 - `start_session()` inserts a row into `sessions` and hands the UUID to `st.session_state`
@@ -118,6 +127,28 @@ attempts(id INTEGER PRIMARY KEY AUTOINCREMENT,
 - `get_recent_questions()` / `get_session_attempts()` back the anti-repeat filter and the
   Markdown report (`report.py`), respectively.
 
+### Spaced repetition (round 2)
+
+A `reviews` table, keyed one row per `(topic, question)` (`UNIQUE(topic, question)`,
+upserted via `ON CONFLICT`), tracks a simple fixed-interval schedule — deliberately not a
+full Anki-style ease-factor algorithm, "similar in spirit to a standard SRS" per the spec
+rather than a reimplementation of one:
+
+- After seeing feedback, the user rates their confidence: **Again** (1 day), **Hard**
+  (3 days), **Good** (7 days), **Easy** (14 days) — `store.RATING_INTERVALS_DAYS`.
+- `store.record_review(topic, question, rating)` upserts that question's `next_review_at`
+  to `now + interval`. Re-rating a question later overwrites its schedule; only the most
+  recent rating is kept, since only the *next* due date matters for scheduling.
+- `store.get_due_questions()` returns rows where `next_review_at <= now`, most-overdue
+  first, optionally scoped to one topic.
+- In `app.py`, a **"🔁 Due for Review"** entry in the topic selector bypasses RAG retrieval
+  and `graph/selection.py` entirely — it's not a topic being searched, it's a specific
+  already-known question being resurfaced — and pulls the single most-overdue row from
+  `get_due_questions()` directly. If nothing is due, the UI says so instead of showing a
+  question. Rating buttons (`RATING_LABELS`) appear under feedback for every question
+  regardless of mode, so any question — RAG-selected or due-for-review — feeds the same
+  schedule.
+
 ## Notebooks vs. real modules
 
 | Still notebook-only | Promoted to a real module |
@@ -128,14 +159,23 @@ attempts(id INTEGER PRIMARY KEY AUTOINCREMENT,
 
 ## Tests
 
-`tests/test_store.py` and `tests/test_selection.py` are real `pytest` tests (28 total, all
+`tests/test_store.py` and `tests/test_selection.py` are real `pytest` tests (40 total, all
 passing as of this writing — run `uv run pytest tests/ -v` to reproduce), added in round 2.
 They replace round 1's manual-script verification for these two modules:
 
 - `test_store.py` exercises `memory/store.py` end to end against a fresh temp SQLite file
   per test (`tmp_path`, via the `db_path` parameter every `store` function already accepts)
   — session creation, attempt recording, cumulative/topic accuracy math, weakest-topic
-  ordering and the >=2-attempts threshold, and the recent-questions anti-repeat query.
+  ordering and the >=2-attempts threshold, the recent-questions anti-repeat query, and the
+  spaced-repetition schedule (interval-per-rating, upsert-on-rerate, due-question filtering/
+  ordering/limit, per-topic scoping).
+- The "Due for Review" mode's Streamlit wiring in `app.py` (`_next_question`, the rating
+  buttons) was smoke-tested with Streamlit's `AppTest` harness — selecting the mode,
+  generating a question, seeding an overdue `reviews` row and confirming it surfaces, and
+  clicking a rating button and confirming the DB row lands with the right `next_review_at`
+  — but isn't part of the `pytest tests/` suite (it needs a `GROQ_API_KEY`, even a dummy one,
+  just to construct `ChatGroq`, and a `questions_db.json` fixture) so it isn't a committed,
+  repeatable test file, just a design-time verification.
 - `test_selection.py` exercises `graph/selection.py`'s difficulty heuristic, the
   target-difficulty logic (default 0.35 under 3 attempts vs. accuracy-driven above it), the
   recently-asked filter and its fall-back-to-full-pool behavior, and `pick_topic_for_auto_mode`'s

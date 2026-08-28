@@ -15,6 +15,9 @@ feedback, and track weak spots across sessions — all in a Streamlit UI.
   scoring and weak-topic tracking accumulate across restarts, not just one sitting
 - **Exportable session report** — download a Markdown summary of a session's questions,
   answers, and feedback
+- **Spaced-repetition review** — rate your confidence (Again/Hard/Good/Easy) after each
+  answer to schedule that exact question's next review 1/3/7/14 days out; a "Due for
+  Review" mode resurfaces whatever has come due instead of pulling from RAG/topic selection
 
 See [DESIGN.md](DESIGN.md) for the architecture, workflow, and data model.
 
@@ -38,8 +41,9 @@ jupyter execute rag.ipynb   # or: run all cells in an editor
 uv run streamlit run app.py
 ```
 
-Opens at `http://localhost:8501`. Pick a topic (or **Auto**, which weights toward your
-weaker topics), answer, and check the sidebar for live and all-time progress.
+Opens at `http://localhost:8501`. Pick a topic (**Auto** weights toward your weaker
+topics; **Due for Review** resurfaces questions from your spaced-repetition schedule),
+answer, rate your confidence, and check the sidebar for live and all-time progress.
 
 ## Tests
 
@@ -47,11 +51,12 @@ weaker topics), answer, and check the sidebar for live and all-time progress.
 uv run pytest tests/ -v
 ```
 
-28 tests cover `memory/store.py` (session/attempt CRUD, cumulative stats, recent-question
-filtering, all against temp SQLite files) and `graph/selection.py` (difficulty heuristic,
-difficulty re-ranking, recently-asked filtering, auto-topic weighting). No ChromaDB
-instance, Groq key, or network access is needed to run them — `selection.py` operates on
-plain candidate lists, not a live vector store.
+40 tests cover `memory/store.py` (session/attempt CRUD, cumulative stats, recent-question
+filtering, and spaced-repetition scheduling — interval math, upsert-on-rerate, due-question
+filtering/ordering — all against temp SQLite files) and `graph/selection.py` (difficulty
+heuristic, difficulty re-ranking, recently-asked filtering, auto-topic weighting). No
+ChromaDB instance, Groq key, or network access is needed to run them — `selection.py`
+operates on plain candidate lists, not a live vector store.
 
 ## Tech Stack
 

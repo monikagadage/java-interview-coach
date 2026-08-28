@@ -8,6 +8,7 @@ into each other.
 from __future__ import annotations
 
 import sqlite3
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -255,3 +256,104 @@ def test_get_recent_questions_scoped_to_topic(db_path):
     )
     recent_oop = store.get_recent_questions("OOP", db_path=db_path)
     assert recent_oop == {"oop-q"}
+
+
+# ── Spaced repetition: record_review / get_due_questions / get_review_state ─
+
+def test_record_review_rejects_unknown_rating(db_path):
+    with pytest.raises(ValueError):
+        store.record_review("OOP", "What is a class?", "Meh", db_path=db_path)
+
+
+@pytest.mark.parametrize(
+    "rating,days",
+    [("Again", 1), ("Hard", 3), ("Good", 7), ("Easy", 14)],
+)
+def test_record_review_schedules_correct_interval(db_path, rating, days):
+    now = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    next_review_at = store.record_review(
+        "OOP", "What is a class?", rating, db_path=db_path, now=now
+    )
+    expected = (now + timedelta(days=days)).isoformat()
+    assert next_review_at == expected
+
+
+def test_record_review_upserts_same_question(db_path):
+    now = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    store.record_review("OOP", "What is a class?", "Again", db_path=db_path, now=now)
+    store.record_review("OOP", "What is a class?", "Easy", db_path=db_path, now=now)
+
+    state = store.get_review_state("OOP", "What is a class?", db_path=db_path)
+    assert state["rating"] == "Easy"
+    assert state["next_review_at"] == (now + timedelta(days=14)).isoformat()
+
+    conn = sqlite3.connect(db_path)
+    count = conn.execute("SELECT COUNT(*) FROM reviews").fetchone()[0]
+    conn.close()
+    assert count == 1  # overwritten, not duplicated
+
+
+def test_get_review_state_none_when_never_rated(db_path):
+    store.init_db(db_path)
+    assert store.get_review_state("OOP", "never rated", db_path=db_path) is None
+
+
+def test_get_due_questions_returns_only_due(db_path):
+    now = datetime(2026, 1, 10, tzinfo=timezone.utc)
+    # Rated "Again" 2 days ago -> due yesterday (already due).
+    store.record_review(
+        "OOP", "overdue question", "Again", db_path=db_path,
+        now=now - timedelta(days=2),
+    )
+    # Rated "Easy" just now -> due in 14 days (not due).
+    store.record_review(
+        "OOP", "not due question", "Easy", db_path=db_path, now=now
+    )
+
+    due = store.get_due_questions(db_path=db_path, now=now)
+    due_questions = {row["question"] for row in due}
+    assert "overdue question" in due_questions
+    assert "not due question" not in due_questions
+
+
+def test_get_due_questions_orders_most_overdue_first(db_path):
+    now = datetime(2026, 1, 10, tzinfo=timezone.utc)
+    store.record_review(
+        "OOP", "slightly overdue", "Hard", db_path=db_path,
+        now=now - timedelta(days=3, hours=1),  # due ~1h ago
+    )
+    store.record_review(
+        "OOP", "very overdue", "Again", db_path=db_path,
+        now=now - timedelta(days=5),  # due 4 days ago
+    )
+
+    due = store.get_due_questions(db_path=db_path, now=now)
+    assert [row["question"] for row in due] == ["very overdue", "slightly overdue"]
+
+
+def test_get_due_questions_filters_by_topic(db_path):
+    now = datetime(2026, 1, 10, tzinfo=timezone.utc)
+    store.record_review(
+        "OOP", "oop due", "Again", db_path=db_path, now=now - timedelta(days=2)
+    )
+    store.record_review(
+        "JVM", "jvm due", "Again", db_path=db_path, now=now - timedelta(days=2)
+    )
+
+    due_oop = store.get_due_questions(db_path=db_path, topic="OOP", now=now)
+    assert {row["question"] for row in due_oop} == {"oop due"}
+
+
+def test_get_due_questions_empty_when_nothing_rated(db_path):
+    store.init_db(db_path)
+    assert store.get_due_questions(db_path=db_path) == []
+
+
+def test_get_due_questions_respects_limit(db_path):
+    now = datetime(2026, 1, 10, tzinfo=timezone.utc)
+    for i in range(5):
+        store.record_review(
+            "OOP", f"q-{i}", "Again", db_path=db_path, now=now - timedelta(days=2)
+        )
+    due = store.get_due_questions(db_path=db_path, now=now, limit=2)
+    assert len(due) == 2
