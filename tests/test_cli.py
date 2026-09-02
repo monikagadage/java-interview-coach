@@ -10,7 +10,12 @@ from __future__ import annotations
 
 import builtins
 
-import cli
+import pytest
+
+# cli.py imports the full app stack (corpus -> chromadb, graph.workflow ->
+# langchain) at module load, even though _prompt_answer itself needs none of
+# it. Skip cleanly when those deps aren't installed (e.g. a lint-only CI job).
+cli = pytest.importorskip("cli", reason="cli.py needs the full app dependencies")
 
 
 def _fake_input(lines: list[str]):
