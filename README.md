@@ -1,82 +1,87 @@
-# ☕ Java Interview Coach
+# Java Interview Coach
 
-An AI-powered Java interview prep tool: practice real interview questions, get instant AI
-feedback, and track weak spots across sessions — all in a Streamlit UI.
+[![CI](https://github.com/monikagadage/java-interview-coach/actions/workflows/ci.yml/badge.svg)](https://github.com/monikagadage/java-interview-coach/actions/workflows/ci.yml)
 
-## Features
+A Java interview-practice tool built around a **retrieval + adaptive-selection
+pipeline**: semantic search over 1,715 real interview questions finds a
+relevant pool, then a difficulty- and history-aware ranker decides which one
+to actually ask. An LLM grades each answer against an ideal answer. Every
+attempt is persisted, so weak-topic weighting and a spaced-repetition
+schedule accumulate across sessions. A Streamlit UI and a headless CLI share
+the exact same core.
 
-- **RAG-powered questions** — semantic search (ChromaDB) over 1,715 real Java interview
-  questions, sourced from an analysis of 600 YouTube interviews
-- **AI evaluation & hints** — Groq (`llama-3.3-70b`) grades each answer against an ideal
-  answer and can give an on-demand hint
-- **Difficulty-adaptive selection** — re-ranks the retrieved candidates against your saved
-  per-topic accuracy, and skips questions you were asked recently
-- **Cross-session persistence** — every attempt is saved to a local SQLite database, so
-  scoring and weak-topic tracking accumulate across restarts, not just one sitting
-- **Exportable session report** — download a Markdown summary of a session's questions,
-  answers, and feedback
-- **Spaced-repetition review** — rate your confidence (Again/Hard/Good/Easy) after each
-  answer to schedule that exact question's next review 1/3/7/14 days out; a "Due for
-  Review" mode resurfaces whatever has come due instead of pulling from RAG/topic selection
+## The pipeline
 
-See [DESIGN.md](DESIGN.md) for the architecture, workflow, and data model.
+```
+topic ─▶ ChromaDB semantic search ─▶ candidate pool ─▶ selection.py ─▶ question
+                                                          │
+        history (SQLite) ────────────────────────────────┤  difficulty re-rank,
+                                                          │  recency filter,
+        answer ─▶ LangGraph evaluate node (LLM) ─▶ score ─┘  weak-topic weighting
+                        │
+                        ▼
+        attempt persisted ─▶ cumulative stats + spaced-repetition schedule
+```
 
-## Quick Start
+## Design decisions
+
+| Decision | Why |
+|---|---|
+| **Selection layered on top of RAG, not replacing it** | Vector search is good at "relevant to this topic," bad at "the right difficulty for this user right now." `graph/selection.py` takes the retrieved pool and re-ranks it against persisted per-topic accuracy, so retrieval stays simple and the adaptivity is testable in isolation (no vector store needed). |
+| **Difficulty is an explicit heuristic, labelled as a proxy** | The 1,715-question bank has no difficulty labels. `_estimate_difficulty` approximates it from question length and phrasing ("why"/"how does X work"/internals vs. "what is"/"define"). Called out in code and docs so it isn't mistaken for ground truth. |
+| **Persistence is stdlib `sqlite3`, no ORM** | `st.session_state` dies with the process. `memory/store.py` writes every attempt (topic, question, correctness, timestamp, session id) so stats survive restarts. One small module, one file, fully unit-tested against temp DBs. |
+| **UI and CLI call the identical core** | `app.py` (Streamlit) and `cli.py` both drive the same `graph/` and `memory/` modules — no business logic behind a Streamlit import. The CLI is both a scripting entry point and proof the split is real. |
+| **Spaced repetition on the same file** | A post-answer confidence rating (Again/Hard/Good/Easy) schedules that exact question 1/3/7/14 days out; "Due for Review" mode resurfaces what's due instead of pulling from RAG. |
+
+See [DESIGN.md](DESIGN.md) for the full architecture and data model.
+
+## Quick start
 
 **Prerequisites:** Python 3.11+, [`uv`](https://github.com/astral-sh/uv), a
 [Groq API key](https://console.groq.com) (free tier).
 
 ```bash
-# Install dependencies
 uv sync
-
-# Set your API key
 echo "GROQ_API_KEY=your_key_here" > .env
 
-# Build the question bank (fetches 1,715 questions, writes questions_db.json)
-# — open rag.ipynb and run all cells once
-jupyter execute rag.ipynb   # or: run all cells in an editor
+# Build the question bank (fetches 1,715 questions -> questions_db.json)
+jupyter execute rag.ipynb
 
-# Run the app
-uv run streamlit run app.py
+uv run streamlit run app.py     # http://localhost:8501
 ```
 
-Opens at `http://localhost:8501`. Pick a topic (**Auto** weights toward your weaker
-topics; **Due for Review** resurfaces questions from your spaced-repetition schedule),
-answer, rate your confidence, and check the sidebar for live and all-time progress.
+**Auto** mode weights toward weaker topics; **Due for Review** pulls from the
+spaced-repetition schedule.
 
-## CLI Practice Mode
-
-The same ask → evaluate → score flow, no Streamlit, no browser — useful for
-scripted/automated practice and as proof the business logic doesn't secretly depend on the
-UI (`app.py` and `cli.py` both call the exact same `graph`/`memory` modules):
+## CLI practice mode
 
 ```bash
-uv run python cli.py                       # auto topic, runs until you type 'quit'
+uv run python cli.py                        # auto topic, until you type 'quit'
 uv run python cli.py --topic OOP --questions 3
+echo "my answer\n\nquit" | uv run python cli.py --questions 5   # scripted
 ```
 
-Needs the same prerequisites as the Streamlit app (`questions_db.json`, `GROQ_API_KEY`).
-Answers are multi-line — type your answer, then a blank line to submit; type `quit` instead
-to stop early. Piped/scripted input works the same way (a blank line submits, EOF stops the
-session cleanly). Every attempt is persisted through `memory/store.py` exactly like the
-Streamlit app, so CLI and Streamlit sessions share the same cross-session stats.
+Same prerequisites and same persistence as the Streamlit app — CLI and UI
+sessions share stats.
 
 ## Tests
 
 ```bash
-uv run pytest tests/ -v
+uv run pytest tests/            # 45 tests
 ```
 
-45 tests cover `memory/store.py` (session/attempt CRUD, cumulative stats, recent-question
-filtering, and spaced-repetition scheduling — interval math, upsert-on-rerate, due-question
-filtering/ordering — all against temp SQLite files), `graph/selection.py` (difficulty
-heuristic, difficulty re-ranking, recently-asked filtering, auto-topic weighting), and
-`cli.py`'s stdin-parsing helper. No ChromaDB instance, Groq key, or network access is
-needed to run them — `selection.py` operates on plain candidate lists, not a live vector
-store, and `cli.py`'s tests only exercise its pure stdin parsing.
+- `test_store.py` — session/attempt CRUD, cumulative stats, recent-question
+  filtering, spaced-repetition interval math, upsert-on-rerate, due-question
+  ordering (all against temp SQLite files).
+- `test_selection.py` — difficulty heuristic, difficulty re-ranking,
+  recently-asked filtering, auto-topic weighting.
+- `test_cli.py` — `cli.py`'s stdin-parsing helper.
 
-## Tech Stack
+`test_store.py` and `test_selection.py` need only `pytest` — no ChromaDB,
+Groq key, or network — which is what CI runs on 3.11 and 3.12. `test_cli.py`
+self-skips unless the full app stack is installed.
+
+## Tech stack
 
 | Layer | Tech |
 |---|---|
@@ -87,28 +92,23 @@ store, and `cli.py`'s tests only exercise its pure stdin parsing.
 | UI | Streamlit |
 | Env / packaging | Python 3.11, `uv` |
 
-## Project Structure
+## Project structure
 
 ```
-app.py              # Streamlit UI, wires graph nodes to session state
-cli.py              # CLI practice mode: ask -> answer -> evaluate -> score, no Streamlit
-corpus.py           # Shared ChromaDB collection loader (used by app.py and cli.py)
-report.py           # Exportable Markdown session report
-rag.ipynb           # Fetches + parses the question corpus into questions_db.json
-main.ipynb          # Early notebook exploration of the ask/evaluate chain
+app.py            Streamlit UI, wires graph nodes to session state
+cli.py            headless practice loop: ask -> answer -> evaluate -> score
+corpus.py         shared ChromaDB collection loader
+report.py         exportable Markdown session report
+rag.ipynb         fetches + parses the question corpus into questions_db.json
 graph/
-  state.py          # Shared LangGraph state (TypedDict)
-  workflow.py        # Node factories + compiled graph (ask/evaluate/hint)
-  selection.py       # Difficulty-adaptive re-ranking on top of RAG retrieval
+  state.py        shared LangGraph state (TypedDict)
+  workflow.py     node factories + compiled graph (ask / evaluate / hint)
+  selection.py    difficulty-adaptive re-ranking on top of RAG retrieval
 memory/
-  store.py           # SQLite persistence for sessions/attempts/reviews + stats
-tests/
-  test_store.py       # memory/store.py: CRUD, cumulative stats, spaced repetition
-  test_selection.py    # graph/selection.py: difficulty ranking, recency filter
-  test_cli.py           # cli.py: stdin-parsing helper
+  store.py        SQLite persistence for sessions / attempts / reviews + stats
+tests/            pytest suite (see above)
 ```
 
 ## Author
 
-**Monika Gadage** — Java/Spring Boot Developer, AI/ML Learner —
-[GitHub](https://github.com/monikagadage)
+**Monika Gadage** — [GitHub](https://github.com/monikagadage)
