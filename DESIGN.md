@@ -10,8 +10,11 @@ workflow — one button click, one `input()` call, or one tool call, at a time.
 
 ```mermaid
 flowchart TD
-    subgraph corpus["Corpus build (rag.ipynb, run once)"]
-        GH[GitHub question list] -->|parse into topics| JSON[questions_db.json]
+    subgraph corpus["Question bank (qbank/, checked in)"]
+        CUR[curated/*.txt] --> BUILD[qbank.build]
+        SRC[public GitHub lists] --> BUILD
+        EXP[LLM expansion --expand] -.-> BUILD
+        BUILD -->|normalize + classify + dedupe| JSON[questions_db.json]
     end
 
     subgraph shared["Shared business logic"]
