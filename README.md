@@ -2,17 +2,30 @@
 
 [![CI](https://github.com/monikagadage/java-interview-coach/actions/workflows/ci.yml/badge.svg)](https://github.com/monikagadage/java-interview-coach/actions/workflows/ci.yml)
 
-A Java interview-practice tool built around a **retrieval + adaptive-selection
+A Java interview-practice coach built around a **retrieval + adaptive-selection
 pipeline**: semantic search over 1,715 real interview questions finds a
 relevant pool, then a difficulty- and history-aware ranker decides which one
 to actually ask. An LLM grades each answer against an ideal answer. Every
 attempt is persisted, so weak-topic weighting and a spaced-repetition
 schedule accumulate across sessions.
 
-Three front-ends drive the identical core: a **Streamlit UI**, a **headless
-CLI**, and an **MCP server** ([Model Context Protocol](https://modelcontextprotocol.io))
-that exposes the whole coach as tools any MCP client — Claude Desktop, Claude
-Code, Cursor, VS Code — can run mock interviews against.
+The same core is exposed through **three interchangeable front-ends**:
+
+```
+                        ┌─ Streamlit UI      (app.py)
+  retrieval + selection │
+  + grading + SQLite  ──┼─ headless CLI      (cli.py)
+  (graph/ + memory/)    │
+                        └─ MCP server        (mcp_server/)  ◀── Claude Desktop,
+                                                                Claude Code,
+                                                                Cursor, VS Code
+```
+
+The **[MCP](https://modelcontextprotocol.io) server** is the interesting one:
+it packages the whole coach as Model Context Protocol tools, resources, and a
+prompt, so any MCP client can run a full mock interview against it — with no
+integration code written per client. That's the difference between "calls an
+LLM API" and "a capability the AI ecosystem can consume."
 
 ## The pipeline
 
@@ -57,44 +70,29 @@ uv run streamlit run app.py     # http://localhost:8501
 **Auto** mode weights toward weaker topics; **Due for Review** pulls from the
 spaced-repetition schedule.
 
-## CLI practice mode
-
-```bash
-uv run python cli.py                        # auto topic, until you type 'quit'
-uv run python cli.py --topic OOP --questions 3
-echo "my answer\n\nquit" | uv run python cli.py --questions 5   # scripted
-```
-
-Same prerequisites and same persistence as the Streamlit app — CLI and UI
-sessions share stats.
-
 ## MCP server
 
 Exposes the coach over the [Model Context Protocol](https://modelcontextprotocol.io)
-so any MCP client can use it as a tool.
+so any MCP client (Claude Desktop, Claude Code, Cursor, VS Code) can run mock
+interviews against it as a tool.
 
 ```bash
-uv run python -m mcp_server          # stdio (for Claude Desktop / Cursor / VS Code)
+uv run python -m mcp_server          # stdio (local clients)
 uv run python -m mcp_server --http   # streamable-HTTP on 127.0.0.1:8000/mcp
 ```
 
-**Tools:** `list_topics`, `start_session`, `get_interview_question` (RAG +
-adaptive selection), `evaluate_answer`, `get_hint`, `record_attempt`,
-`rate_question`, `get_due_reviews`, `get_progress`.
-**Resources:** `interview://topics`, `interview://progress`,
-`interview://question-bank/{topic}`.
-**Prompt:** `mock_interview(topic, num_questions)` — a template that drives a
-full session through the tools.
+| Kind | Names |
+|---|---|
+| **Tools** | `list_topics`, `start_session`, `get_interview_question` (RAG + adaptive selection), `evaluate_answer`, `get_hint`, `record_attempt`, `rate_question`, `get_due_reviews`, `get_progress` |
+| **Resources** | `interview://topics`, `interview://progress`, `interview://question-bank/{topic}` |
+| **Prompt** | `mock_interview(topic, num_questions)` — drives a full session through the tools |
 
-The ChromaDB collection and the Groq client are built lazily, so `list_tools`
+The ChromaDB collection and the Groq client are built lazily, so tool listing
 and the store-backed tools respond instantly. `evaluate_answer` / `get_hint`
 need `GROQ_API_KEY`; without it they return a clear message and everything
 else still works.
 
-<details>
-<summary>Claude Desktop / Cursor config</summary>
-
-`claude_desktop_config.json` (or `.cursor/mcp.json`):
+**Add it to Claude Desktop / Cursor** — `claude_desktop_config.json` or `.cursor/mcp.json`:
 
 ```json
 {
@@ -109,7 +107,19 @@ else still works.
 ```
 
 Claude Code: `claude mcp add java-interview-coach -- uv --directory /ABS/PATH run python -m mcp_server`
-</details>
+
+Then ask the client: *"Use the mock_interview prompt — topic OOP, 5 questions."*
+
+## CLI practice mode
+
+```bash
+uv run python cli.py                        # auto topic, until you type 'quit'
+uv run python cli.py --topic OOP --questions 3
+echo "my answer\n\nquit" | uv run python cli.py --questions 5   # scripted
+```
+
+Same prerequisites and same persistence as the Streamlit app — CLI and UI
+sessions share stats.
 
 ## Tests
 
