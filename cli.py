@@ -35,13 +35,7 @@ from corpus import load_collection
 from graph.selection import pick_topic_for_auto_mode
 from graph.workflow import build_nodes
 from memory import store
-
-AUTO = "auto"
-TOPICS = [
-    "OOP", "Java Core", "Java Collections", "Spring",
-    "JVM", "Multithreading", "Databases", "Java 8",
-    "Patterns", "Testing",
-]
+from topics import AUTO, TOPICS
 
 
 def _prompt_answer() -> str | None:

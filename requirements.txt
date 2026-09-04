@@ -1,7 +1,9 @@
 langgraph
 langchain
+langchain-groq
 langchain-google-genai
 python-dotenv
 cryptography==41.0.7
 chromadb
 onnxruntime<1.20
+mcp>=1.6,<2
