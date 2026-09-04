@@ -46,9 +46,10 @@ flowchart TD
 
 ### RAG pipeline
 
-- `rag.ipynb` fetches the raw question list from a public GitHub README, regex-parses its
-  Markdown tables into `{topic: [questions]}`, and writes `questions_db.json` (1,715
-  questions across ~27 topics). This step needs network access and is run once, by hand.
+- The question bank (`questions_db.json`, `{topic: [questions]}`, ~2,500 questions across
+  the 10 canonical topics) is **built by `qbank/` and checked in** — see "Question-bank
+  pipeline" below. `rag.ipynb` is now a thin wrapper that shells out to `python -m
+  qbank.build`.
 - `app.py`'s `load_vector_db()` (`@st.cache_resource`) opens a `chromadb.Client()` — an
   **ephemeral, in-memory** client, not a client backed by a persisted directory — and, if
   the collection is empty, loads all of `questions_db.json` into it in batches of 100 using
@@ -214,21 +215,58 @@ persistence, and spaced-repetition logic.
 and the MCP server share one topic list and one set of prompt strings instead of three
 copies drifting apart.
 
+### Question-bank pipeline (round 4)
+
+The original `rag.ipynb` scraped one GitHub README (1,715 questions, ~27 of the source's
+own topic labels, transcription noise and all) into `questions_db.json`. That is now the
+`qbank/` package, and the JSON is a checked-in build artifact so the app runs with no
+build step.
+
+- **Three inputs, one shape.** `qbank/curated/*.txt` (~1,700 questions hand-written for
+  this repo, filed by the topic in the file name); `qbank/sources.py` (four public GitHub
+  lists, each with a format-specific parser returning `(question, category_hint)` pairs);
+  and `qbank/expand.py` (opt-in LLM generation across `qbank/taxonomy.py`'s
+  topic→subtopic tree). All three converge on `{topic: [question]}`.
+- **`build.py` orchestration.** `normalize` each raw string (strip numbering/markdown/glued
+  answers; reject headings, boilerplate, and anything that doesn't read like a question) →
+  `_route` to a canonical topic (source's category hint mapped via `CATEGORY_MAP`, else the
+  keyword classifier, else **drop** — an unlabelled question the classifier can't place is
+  almost always source noise, which is why the checked-in bank is ~2,500 and not the
+  ~3,300 raw total) → `dedupe` globally → bucket by topic → sort.
+- **Dedup is blocked, not O(n²).** Exact pass on a punctuation-insensitive key, then a
+  fuzzy pass: bucket each question by its three rarest tokens, and within a bucket drop any
+  question whose token-set Jaccard with an already-kept one is ≥ 0.85. Question-specific
+  stop words (`difference`, `between`, `vs`, `java`, …) are removed first so "difference
+  between X and Y" and "X vs Y in Java" land in the same bucket.
+- **Classifier is a labelled heuristic**, same spirit as the difficulty estimate: ordered
+  regex rules per topic (most specific first, so "concurrent collection" → Multithreading),
+  first match wins, `Java Core` as the fallback — but `build._route` only trusts it when a
+  rule actually fired.
+- **`--expand` is cached and resumable.** One prompt per `(topic, subtopic)`; results
+  cached under `qbank/.cache/expand/<slug>.json`, so an interrupted run resumes and
+  re-runs cost nothing. A flaky LLM call yields an empty list for that subtopic rather than
+  aborting the build. Takes any object with `.invoke(str) -> obj.content`, so it's tested
+  with a fake and defaults to `ChatGroq` in `build.py`.
+- **Fetches are cached** to `qbank/.cache/` (gitignored) with a `certifi` TLS context
+  (macOS system Python often can't verify GitHub's chain otherwise).
+
 ## Notebooks vs. real modules
 
 | Still notebook-only | Promoted to a real module |
 |---|---|
-| `rag.ipynb` — fetches/parses the question corpus into `questions_db.json`. Must be run by hand once (or whenever the corpus should be refreshed); nothing in `app.py` regenerates it. | `graph/state.py`, `graph/workflow.py` — the LangGraph state and node/graph wiring described above, imported directly by `app.py`. |
+| `rag.ipynb` — now just a two-cell wrapper that shells out to `python -m qbank.build`; kept so the "how is the bank made" entry point is still discoverable from the notebook list. | `qbank/` — the question-bank build pipeline (sources, parsers, normalize, classify, dedup, taxonomy, expand, build), with `tests/test_qbank.py`. `graph/state.py`, `graph/workflow.py` — the LangGraph wiring, imported by `app.py`. |
 | `main.ipynb` — original exploratory notebook for the ask→evaluate chain (uses a plain per-call `question_chain`, no RAG, no persistence, no difficulty adaptation). Superseded by the app; kept for reference only, not imported anywhere. | `graph/selection.py` — difficulty-adaptive ranking, used by `workflow.py`'s `ask` node. |
 | `graph/state.ipynb`, `graph/workflow.ipynb` — earlier sketches of the same state/workflow shape; `graph/state.py` and `graph/workflow.py` are the promoted, actually-imported versions. | `memory/store.py` — SQLite persistence, used by `workflow.py`, `selection.py`, `app.py`, and `report.py`. |
 
 ## Tests
 
-`uv run pytest tests/ -v` runs 61 tests, all passing as of this writing. `test_store.py`
-and `test_selection.py` (40 tests) were added in round 2 to replace round 1's manual-script
-verification; `test_mcp_tools.py` and `test_mcp_server.py` (16 tests) were added in round 3
-with the MCP server. All of them except `test_cli.py` run with just `pytest` (+ the
-lightweight `mcp` SDK for the two MCP files) — no ChromaDB, Groq key, network, or
+`uv run pytest tests/ -v` runs 99 tests, all passing as of this writing. `test_store.py`
+and `test_selection.py` (40 tests) were added in round 2; `test_mcp_tools.py` and
+`test_mcp_server.py` (16 tests) in round 3; `test_qbank.py` (38 tests) in round 4 with the
+bank pipeline — normalization, classification, fuzzy dedup, every source parser, expansion
+against a fake LLM, and a full offline `build.build()` run with fixture Markdown monkey-
+patched over `qbank.fetch.fetch`. All of them except `test_cli.py` run with just `pytest`
+(+ the lightweight `mcp` SDK for the two MCP files) — no ChromaDB, Groq key, network, or
 `questions_db.json`.
 
 - `test_store.py` exercises `memory/store.py` end to end against a fresh temp SQLite file

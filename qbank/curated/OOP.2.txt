@@ -1,0 +1,71 @@
+How would you model a shape hierarchy so that adding a new shape does not require editing existing code?
+What is the difference between an interface with one method and a class with one method for representing a callback?
+Why might returning an interface type from a factory be better than returning a concrete class?
+How do you decide between throwing an exception and returning an Optional from a domain method?
+What is the difference between a static nested class and a top-level class from a design standpoint?
+Why is exposing a mutable collection field a design mistake and how do you fix it?
+What is the difference between an accessor that returns a copy and one that returns an unmodifiable view?
+How do you prevent object state from becoming inconsistent when multiple setters must be called together?
+What is a self-validating constructor and why is it better than validating later?
+How do you enforce that an object is always created in a valid state?
+What is the "tell, don't ask" principle?
+How does "tell, don't ask" reduce the temptation to add getters?
+What is primitive obsession and how do value objects fix it?
+How would you replace a boolean parameter that controls behavior with something more readable?
+What is the difference between a domain model and a data transfer object in terms of behavior?
+Why is an entity usually mutable while a value object is immutable?
+How do you compare two entities for equality versus two value objects?
+What is aggregate root in domain design and why does it own its children's lifecycle?
+How does encapsulation of collections protect an aggregate's invariants?
+What is the difference between a shallow and deep equals for a composite object?
+Why can inheritance leak implementation details of the superclass?
+What is the difference between extending a class and delegating to it?
+How does the decorator approach use delegation instead of inheritance?
+When is multiple interface implementation a code smell?
+What is an interface default method's risk for existing implementers?
+How would you evolve a published interface without breaking clients?
+What is binary compatibility versus source compatibility for an API change?
+Why is adding a method to an interface a breaking change but adding a default method is not?
+What is the difference between a checked exception in a method signature and a documented unchecked one for API design?
+How do you design an API that is hard to misuse?
+What does "make illegal states unrepresentable" mean in Java terms?
+How do enums help make illegal states unrepresentable?
+What is the difference between a type-safe enum and an int constant from a correctness standpoint?
+Why should you avoid returning null from a method that returns a collection?
+What is the null object pattern and when is it cleaner than null checks?
+How would you design a class whose instances must be cached and shared?
+What is the difference between object identity and a business key?
+How do you implement a natural ordering that is consistent with equals?
+Why can a Comparator that is not consistent with equals break a TreeMap?
+What is the difference between an abstract method and a template method?
+How does the template method pattern invert control between base and subclass?
+What is a hook method and why is it usually protected?
+What is the difference between composition, aggregation, and association?
+How do you avoid a bidirectional association becoming inconsistent?
+What is the difference between a class invariant and a method precondition?
+How does design by contract relate to Java assertions and exceptions?
+What is the difference between a fail-fast and a fail-safe API?
+Why is it better to fail fast on invalid input at a boundary?
+What is the difference between defensive copying on input versus on output?
+How do you make a builder produce an immutable object?
+Why should a builder validate at build time rather than per setter?
+What is a fluent builder and how does the method chaining return type work?
+How do you prevent a partially built object from escaping a builder?
+What is the difference between a constructor with many parameters and a builder in terms of readability and safety?
+How would you design an object that supports optional configuration with sensible defaults?
+What is the difference between static polymorphism via generics and dynamic polymorphism via inheritance?
+How do generics provide compile-time type safety that inheritance alone does not?
+What is the difference between an abstract class implementing an interface partially and a full implementation?
+Why might you make a helper method private rather than protected?
+What is the effect of making a class package-private on its testability and API surface?
+How do you expose a class for testing without making it fully public?
+What is the difference between an internal package and a public API package in a modular design?
+Why does deep coupling to a concrete class make code hard to test?
+How does programming to an interface improve substitutability in tests?
+What is the difference between a seam and a dependency for testing purposes?
+How would you refactor a class that news up its own collaborators?
+What is the difference between constructor injection and a service locator from a coupling standpoint?
+Why is a static dependency harder to replace than an injected one?
+How do you design a class so a fake implementation is easy to write?
+What is the cost of an abstraction that has only one implementation?
+When is it premature to introduce an interface?

@@ -1,9 +1,10 @@
-"""Shared ChromaDB collection loader for both app.py (Streamlit) and cli.py.
+"""Shared ChromaDB collection loader for app.py, cli.py, and the MCP server.
 
-Extracted in round 2 so the "load the question corpus into ChromaDB" step
-isn't duplicated between the two UIs. ``app.py`` wraps ``load_collection``
-in ``@st.cache_resource`` (a Streamlit-only concern); ``cli.py`` calls it
-directly. Both end up exercising the exact same retrieval setup.
+Loads ``questions_db.json`` (checked in — ~2,500 questions, built by
+``python -m qbank.build``; see ``qbank/``) into an in-memory ChromaDB
+collection, embedding it on first use. Extracted in round 2 so the "load
+the corpus" step isn't duplicated across front-ends; ``app.py`` wraps this
+in ``@st.cache_resource``, everything else calls it directly.
 """
 from __future__ import annotations
 
@@ -17,7 +18,10 @@ QUESTIONS_DB_PATH = Path(__file__).resolve().parent / "questions_db.json"
 
 def load_collection(questions_path: str | Path = QUESTIONS_DB_PATH):
     """Return a ChromaDB collection of the question bank, embedding it on
-    first use (in-memory, ephemeral client — see DESIGN.md for why)."""
+    first use (in-memory, ephemeral client — see DESIGN.md for why).
+
+    Regenerate the bank with ``python -m qbank.build`` (add ``--expand`` for
+    LLM expansion)."""
     client = chromadb.Client()
     collection = client.get_or_create_collection(name="java_questions")
 

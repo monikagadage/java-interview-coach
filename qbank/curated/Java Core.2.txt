@@ -1,0 +1,71 @@
+Why does substring in modern Java copy the char array instead of sharing it?
+What is the difference between String.equals and String.equalsIgnoreCase in terms of locale?
+Why can String.toLowerCase produce surprising results without a Locale argument?
+What is a code point versus a char in Java's string model?
+How do you correctly iterate over the characters of a string that contains emoji?
+What is the difference between String.chars and String.codePoints?
+Why is String.split with a regex metacharacter a common bug?
+What does String.strip do that trim does not?
+What is the difference between isEmpty and isBlank?
+How does StringBuilder.reverse handle surrogate pairs?
+What is the initial capacity of a StringBuilder and when does it resize?
+Why is concatenating in a loop with += quadratic in the worst case?
+What is the difference between a compile-time constant string and one built at runtime for interning?
+What happens when you synchronize on a string literal?
+Why is synchronizing on a boxed Integer or a string literal dangerous?
+What is the difference between an unchecked exception and an error in terms of recoverability?
+Why should you not catch and ignore InterruptedException?
+What is the correct way to rethrow after cleanup in a catch block?
+What is exception translation and when is it appropriate?
+Why should low-level exceptions not leak through a high-level API?
+What is the difference between logging an exception and rethrowing it, and why not both?
+What does adding a cause to an exception preserve?
+What is the performance cost of filling in a stack trace and how do you avoid it for control-flow exceptions?
+What is a stackless exception and when is it acceptable?
+Why is using exceptions for normal control flow considered an anti-pattern?
+What is the difference between a checked exception and Optional for a recoverable absent value?
+What is the diamond of death for generics and how does erasure avoid it at runtime?
+Why can you not overload two methods that differ only by List<String> and List<Integer>?
+What is a heap pollution warning and what causes it?
+What does @SafeVarargs assert and when is it safe to use?
+Why can't you catch a generic exception type parameter?
+What is the difference between Class<?> and Class<T>?
+What is a type token and how does it work around erasure?
+What is the difference between an enum's ordinal and its name, and why avoid persisting ordinal?
+How do you add behavior that varies per enum constant without a switch statement?
+What is an enum with an abstract method and a body per constant?
+Why is EnumSet more efficient than a HashSet of enum values?
+What is the difference between Integer.valueOf and new Integer, and why is the latter deprecated?
+What surprising result does comparing two boxed longs with == give above 127?
+What is the difference between == on wrappers and .equals, and which does a switch use?
+What is a NaN and why does NaN != NaN?
+What is the difference between 0.1 + 0.2 == 0.3 and using BigDecimal?
+Why should BigDecimal be constructed from a string rather than a double?
+What is the difference between BigDecimal.equals and compareTo for 1.0 and 1.00?
+What is an integer division truncation bug and how do you avoid it?
+What does Math.floorMod do that % does not for negative operands?
+What is the difference between a static field initialized inline and one initialized in a static block?
+What is the initialization-on-demand holder idiom and why is it thread-safe?
+What is a class initialization deadlock and how can two classes trigger it?
+Why does referencing a compile-time constant not trigger class initialization?
+What is the difference between Class.forName with and without initialization?
+What is the difference between loading a class and initializing it, observable from static blocks?
+What is a memory-visible final field guarantee after construction?
+What is the difference between a final field and a volatile field for publication safety?
+What does the try-with-resources desugar into?
+Why is the resource variable implicitly final in try-with-resources?
+What is the difference between AutoCloseable and Closeable?
+Why does Closeable.close declare IOException but AutoCloseable.close declares Exception?
+What is a common bug when a stream is not closed in a try-with-resources?
+What is the difference between an unchecked cast warning and a ClassCastException at runtime?
+What is the difference between instanceof pattern matching and an explicit cast?
+What is a sealed interface and how does it enable exhaustive switch?
+What is a switch expression and how does it differ from a switch statement?
+What is the arrow form of switch and why does it not fall through?
+What is pattern matching for switch and what is a guarded pattern?
+What is a record's canonical, compact, and custom constructor?
+Can a record define additional instance fields? Why not?
+How does a record implement equals, hashCode, and toString?
+What is the difference between a record and a Lombok @Value class?
+What does the @Override annotation actually check at compile time?
+Why should you always annotate an overriding method with @Override?

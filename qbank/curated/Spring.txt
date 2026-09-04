@@ -1,0 +1,84 @@
+What is the Spring Framework and what problems does it solve?
+What is Inversion of Control and how does Spring implement it?
+What is dependency injection and what are its three styles in Spring?
+Why is constructor injection preferred over field injection?
+How do you inject a dependency that has multiple candidate beans?
+What do @Primary and @Qualifier do?
+What is the Spring IoC container and what is the difference between BeanFactory and ApplicationContext?
+What is a Spring bean?
+What are the bean scopes in Spring and what is the default?
+What is the difference between singleton and prototype scope?
+What happens when a singleton bean depends on a prototype bean?
+How do you inject a fresh prototype instance into a singleton?
+What are the request, session, and application scopes used for?
+What is the Spring bean lifecycle from instantiation to destruction?
+What are @PostConstruct and @PreDestroy for?
+What is the difference between InitializingBean and an init-method?
+What is a BeanPostProcessor and give a real use?
+What is a BeanFactoryPostProcessor and how does it differ from a BeanPostProcessor?
+What is the difference between @Component, @Service, @Repository, and @Controller?
+What extra behavior does @Repository add?
+What is @Configuration and how does it differ from @Component for bean definitions?
+Why are @Bean methods in a @Configuration class proxied?
+What is component scanning and how do you control its base packages?
+What is the difference between @Bean and @Component for third-party classes?
+What is Spring Boot and what does it add over plain Spring?
+What is auto-configuration and how does Spring Boot decide what to configure?
+What is a starter dependency?
+What does @SpringBootApplication combine?
+How does @ConditionalOnMissingBean enable overriding auto-configuration?
+What is the order of property source resolution in Spring Boot?
+What is the difference between application.properties and application.yml?
+How do @Value and @ConfigurationProperties differ for binding configuration?
+What is a Spring profile and how do you activate one?
+How do you provide different beans per profile?
+What is the Environment abstraction?
+What is Spring MVC and what is the role of the DispatcherServlet?
+Walk through the lifecycle of an HTTP request in Spring MVC.
+What is a HandlerMapping and a HandlerAdapter?
+What is the difference between @Controller and @RestController?
+What does @RequestMapping map and what are its shortcut annotations?
+What is the difference between @RequestParam, @PathVariable, and @RequestBody?
+How does Spring convert a request body to an object and back?
+What is @ResponseStatus and how does it relate to exception handling?
+What is @ControllerAdvice and @ExceptionHandler?
+How do you return a proper error response with ResponseEntity?
+What is content negotiation in Spring MVC?
+What is an interceptor and how does it differ from a servlet filter?
+What is CORS and how do you configure it in Spring?
+What is Spring Data JPA and what does extending JpaRepository give you?
+How does Spring Data derive a query from a method name?
+What is the difference between @Query with JPQL and a native query?
+What is the N+1 select problem with JPA and how do you fix it in Spring Data?
+What is the difference between findById returning Optional and getReferenceById?
+What is a projection in Spring Data and why use one?
+What is @Transactional and where should it be placed?
+What is the default propagation and isolation level for @Transactional?
+What is the difference between REQUIRED and REQUIRES_NEW propagation?
+Why does calling a @Transactional method from within the same class not start a transaction?
+What is the default rollback rule for @Transactional and how do you change it?
+What is the difference between checked and unchecked exceptions for transaction rollback?
+What is Spring AOP and what kinds of advice does it support?
+How is Spring AOP implemented, and what is the difference between JDK dynamic proxies and CGLIB?
+Why can't Spring AOP intercept a call to a private or self-invoked method?
+What is a pointcut expression?
+What is a cross-cutting concern and give three examples solved by AOP?
+What is Spring Boot Actuator and what endpoints does it expose?
+How do you add a custom health indicator?
+How do you expose application metrics with Micrometer?
+What is the difference between Spring MVC and Spring WebFlux?
+What is a Mono and a Flux?
+When would you choose the reactive stack over the servlet stack?
+What is Spring Security's filter chain?
+What is the difference between authentication and authorization in Spring Security?
+How do you secure a REST API with JWT in Spring Security?
+What is method-level security with @PreAuthorize?
+What is CSRF and why is it typically disabled for stateless APIs?
+How do you write an integration test for a Spring Boot controller?
+What does @WebMvcTest load compared to @SpringBootTest?
+What does @DataJpaTest configure?
+What is @MockBean and how does it differ from a plain Mockito mock?
+What is a TestRestTemplate or WebTestClient used for?
+How do you test that a bean is wired correctly without starting the whole context?
+What is the difference between @Autowired required true and Optional injection?
+How do you handle circular dependencies between two beans?

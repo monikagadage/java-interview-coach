@@ -1,0 +1,103 @@
+What is encapsulation and how does Java enforce it?
+Why is it considered bad practice to expose public fields instead of accessors?
+How do access modifiers (private, default, protected, public) differ in scope?
+What is the difference between package-private and protected access?
+Can a subclass in a different package access a protected member of its superclass?
+How does encapsulation help with maintaining class invariants?
+What is the difference between data hiding and abstraction?
+How would you design an immutable class in Java?
+Why should defensive copies be made in getters and constructors of immutable classes?
+What breaks the immutability of a class that stores a Date or a List field?
+What is the difference between inheritance and composition?
+When should you favor composition over inheritance?
+What problems does deep inheritance hierarchy cause?
+What is the fragile base class problem?
+How does the "is-a" versus "has-a" relationship guide your design choices?
+Can you achieve code reuse without inheritance? How?
+What is the diamond problem and how does Java avoid it for classes?
+How do default methods in interfaces reintroduce a form of the diamond problem?
+How does Java resolve a conflict when two interfaces provide the same default method?
+What is polymorphism and what are its forms in Java?
+What is the difference between compile-time and runtime polymorphism?
+How does dynamic method dispatch work in the JVM?
+Why can't static methods be overridden, only hidden?
+What happens when you call an overridden method from a superclass constructor?
+What is method overloading and how does the compiler resolve overloaded calls?
+Can two methods differ only by return type and still be valid overloads?
+How does autoboxing affect overload resolution?
+What is covariant return type and when is it useful?
+What is the difference between an abstract class and an interface?
+When would you choose an abstract class over an interface?
+Can an abstract class have a constructor? Why would it need one?
+Can an interface have state in Java? How has that evolved?
+What are private methods in interfaces used for?
+What is a functional interface and why does it matter?
+What is abstraction and how is it different from encapsulation?
+How do you decide what belongs in an interface versus an implementation?
+What is the Liskov Substitution Principle in practical terms?
+Give an example where subclassing violates the Liskov Substitution Principle.
+What is the Single Responsibility Principle and how do you recognize a violation?
+What is the Open/Closed Principle and how do you apply it in Java?
+What is the Interface Segregation Principle?
+What is the Dependency Inversion Principle and how does it relate to dependency injection?
+What is the difference between coupling and cohesion?
+How do you reduce coupling between two classes that must collaborate?
+What is a constructor and how does constructor chaining work?
+What is the difference between this() and super() in a constructor?
+Why must this() or super() be the first statement in a constructor?
+What is the order of initialization for static fields, instance fields, and constructors?
+What happens if a constructor throws an exception halfway through?
+What is a copy constructor and does Java provide one automatically?
+Why is telescoping constructors an anti-pattern and what replaces it?
+What is the builder pattern and what problem does it solve for object construction?
+What is a static nested class and how does it differ from an inner class?
+Why does a non-static inner class hold a reference to its enclosing instance?
+How can an inner class cause a memory leak?
+What is an anonymous class and when would you use one over a lambda?
+What is a local class and where can it capture variables from?
+What does "effectively final" mean for variables captured by a lambda or local class?
+What is the final keyword's effect on a class, a method, and a field?
+Can a final method be overloaded?
+What is a blank final variable and where must it be assigned?
+Why are constant fields usually declared static final?
+What is the difference between a class variable and an instance variable?
+What does the static keyword mean for a nested class versus a method?
+Can you overload the main method? Will the JVM call the overload?
+What is the difference between overriding equals and overriding ==?
+What is the contract between equals and hashCode?
+What happens if you override equals but not hashCode and use the object as a map key?
+How would you implement equals and hashCode for a class with three fields?
+Should equals consider the runtime class or use instanceof? What are the trade-offs?
+What is the role of the Object class in Java's type hierarchy?
+Which methods does every class inherit from Object?
+What does the default toString implementation return?
+When should you override toString and what should it contain?
+What is object cloning and why is Cloneable considered broken?
+What is the difference between a shallow copy and a deep copy?
+How would you implement a deep copy without Cloneable?
+What is a value object and how does it differ from an entity?
+Why should value objects be immutable?
+What is the difference between identity and equality for objects?
+How does the "prefer immutability" guideline interact with performance?
+What is a marker interface and give an example from the JDK?
+What is the difference between aggregation and composition in UML terms?
+How do you model a bidirectional association between two classes safely?
+What is the law of Demeter and how does violating it show up in code?
+What is a God object and how do you refactor away from one?
+What is feature envy and how do you fix it?
+What is the difference between a static factory method and a constructor?
+What are the advantages of static factory methods over public constructors?
+Why might you make a constructor private?
+What is the difference between a POJO and a JavaBean?
+What conventions must a class follow to be a JavaBean?
+How do you prevent a class from being subclassed and why might you want to?
+How do you design a class that is safe to extend?
+Why should you document a class for inheritance or else prohibit it?
+What is the template method pattern and how does it use inheritance?
+What is the difference between an abstract method and an unimplemented interface method?
+What is upcasting and downcasting, and when is downcasting unsafe?
+What does the instanceof operator do and how does pattern matching for instanceof help?
+What is a sealed class and what problem does it solve for modeling hierarchies?
+How do records change the way you write simple data-carrying classes?
+Can a record implement an interface or be generic?
+Why can't a record extend another class?

@@ -1,0 +1,113 @@
+What is the difference between String, StringBuilder, and StringBuffer?
+Why is String immutable in Java?
+What is the string constant pool and how does string interning work?
+What does the intern() method do and when would you call it?
+How many objects are created by new String("abc")?
+Why is using String concatenation in a loop discouraged?
+When is StringBuilder preferred over StringBuffer?
+How does the compiler optimize simple string concatenation with the + operator?
+What is the difference between == and equals() for String comparison?
+Why can switching on strings be slower than switching on enums or ints?
+What is the equals and hashCode contract in detail?
+What are the five properties that equals must satisfy?
+What happens to a HashSet if an element's fields change after insertion?
+Why should hashCode be consistent with equals?
+Is it legal for two unequal objects to have the same hashCode?
+What is the difference between a checked and an unchecked exception?
+When should you create a checked exception versus an unchecked one?
+What is the difference between Error, Exception, and RuntimeException?
+What is exception chaining and why is preserving the cause important?
+What does try-with-resources do and what interface must a resource implement?
+In what order are resources closed in a try-with-resources block?
+What happens if both the try block and close() throw exceptions?
+What are suppressed exceptions and how do you retrieve them?
+Why is catching Throwable or Exception broadly considered bad practice?
+What is the difference between throw and throws?
+Can a finally block prevent an exception from propagating? Should it?
+What happens if a return statement appears in both try and finally?
+What is a multi-catch block and what restriction applies to its exception types?
+Why can't you catch a more specific exception after a broader one?
+What are generics and what problem do they solve?
+What is type erasure and what are its consequences?
+Why can't you create an array of a generic type?
+What is the difference between List<Object>, List<?>, and List<T>?
+What does the "producer extends, consumer super" (PECS) rule mean?
+What is a bounded type parameter and when do you need multiple bounds?
+Why can't you use instanceof with a parameterized type?
+What is a raw type and why does using one generate a warning?
+What is a bridge method and why does the compiler generate one?
+Can a static method be generic independently of its class?
+What is an enum in Java and how is it different from a set of int constants?
+Can an enum have fields, constructors, and methods?
+How do you implement different behavior per enum constant?
+Why is an enum a good way to implement a singleton?
+How does EnumMap or EnumSet differ from a regular HashMap or HashSet?
+What does the values() method on an enum return and is it cached?
+What is autoboxing and unboxing?
+What NullPointerException risk does unboxing introduce?
+Why does comparing two Integer objects with == sometimes work and sometimes not?
+What is the Integer cache and what range does it cover?
+Is Java pass-by-value or pass-by-reference? Explain precisely.
+What actually gets copied when you pass an object to a method?
+Can a method change the object a caller's variable points to?
+What is the difference between a primitive type and a reference type?
+What are the default values of the different primitive types and of references?
+What is integer overflow and how does Java handle it?
+What is the difference between float and double precision?
+Why should you not use float or double for monetary values?
+What is BigDecimal and when should you use it?
+What does the static keyword mean when applied to a field, method, block, or nested class?
+What is a static initializer block and when does it run?
+What is the difference between a static and an instance initializer block?
+Can you access an instance variable from a static method? Why not?
+What is method hiding and how does it differ from overriding for static methods?
+What is the difference between an annotation with SOURCE, CLASS, and RUNTIME retention?
+How do you read an annotation's values at runtime?
+What is a meta-annotation and give two examples?
+What is a repeatable annotation and how is it implemented under the hood?
+What is reflection and what can you do with it?
+What are the performance and security costs of reflection?
+How do you invoke a private method using reflection and should you?
+What is the difference between Class.forName and ClassLoader.loadClass?
+What is serialization and what does implementing Serializable actually do?
+What is serialVersionUID and what happens if it does not match on deserialization?
+What is the transient keyword and when do you use it?
+How do you customize serialization with writeObject and readObject?
+Why is Java's default serialization considered a security risk?
+What alternatives to Java serialization would you use for a network protocol?
+What is the difference between == comparing references and comparing values?
+What is varargs and how does it interact with method overloading?
+What is the ambiguity risk when a method has both an array parameter and a varargs overload?
+What is the difference between the final, finally, and finalize keywords?
+Why is the finalize method deprecated and what replaces it?
+What is a Cleaner and how does it differ from finalization?
+What is a Runtime shutdown hook and when does it run?
+What is the difference between an inner class and a static nested class in terms of memory?
+What is a NestHost and why was nest-based access control added?
+What is the difference between String.format and a StringBuilder for building output?
+What is a text block and what problem does it solve?
+What is the diamond operator and what type inference does it provide?
+What is local variable type inference with var and where can it not be used?
+What is the difference between an unmodifiable view and a truly immutable collection?
+What does Objects.requireNonNull add over a manual null check?
+What is the difference between Optional and returning null?
+When is it inappropriate to use Optional as a field or a method parameter?
+What is a static import and what is the readability trade-off?
+What is the classpath and how does the JVM locate classes on it?
+What is the difference between the classpath and the module path?
+What is a compile-time constant and how does inlining it cause a subtle bug?
+What is the difference between a wrapper class and its primitive?
+Why are wrapper classes immutable?
+What does Integer.parseInt do differently from Integer.valueOf?
+What is the difference between an assertion and an exception, and when are assertions enabled?
+What is the ternary operator's type promotion behavior?
+What is short-circuit evaluation and which operators use it?
+What is the difference between the bitwise and logical AND operators?
+What is an unsigned right shift and how does it differ from a signed shift?
+What is a labeled break and when is it justified?
+What is the difference between an array and an ArrayList?
+How is a two-dimensional array represented in memory in Java?
+What is the difference between Arrays.asList and a new ArrayList?
+What is the difference between System.arraycopy and Arrays.copyOf?
+What is a checked exception's impact on lambda bodies and how do you deal with it?
+What is the difference between an interface's abstract method and a default method for binary compatibility?

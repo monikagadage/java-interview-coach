@@ -1,0 +1,65 @@
+What makes a unit test fast, and why does speed matter for a large suite?
+Why should a unit test not touch the network, the filesystem, or the clock?
+What is the difference between a test that is isolated and one that shares state with its neighbors?
+What is test pollution and how does test ordering expose it?
+Why should tests not depend on execution order?
+What is the arrange-act-assert pattern and why keep the act step to one line?
+What is a single logical assertion per test and why is it a guideline not a rule?
+What is the difference between testing behavior and testing implementation?
+Why does asserting on private state make a test brittle?
+What is a characterization test and when do you add one to legacy code?
+What is a seam and how do you introduce one to make untestable code testable?
+What is the difference between a stub that returns canned data and a mock that verifies an interaction?
+When is verifying an interaction the right assertion and when is it over-specification?
+What is the London versus Chicago school of TDD?
+What is the risk of mocking types you do not own?
+Why is wrapping a third-party client in your own interface better than mocking the client directly?
+What is a contract test and what problem does it solve between two services?
+What is consumer-driven contract testing and what tool implements it?
+What is the difference between a fake in-memory implementation and a mock?
+When is a hand-written fake better than a Mockito mock?
+What is the classicist argument against mocking value objects?
+What does it mean for a test to be deterministic?
+Name three common causes of flaky tests.
+How do you test code that depends on the current time?
+Why should you inject a Clock instead of calling Instant.now directly?
+How do you make a test that uses randomness reproducible?
+How do you test asynchronous code that completes on another thread without Thread.sleep?
+What does Awaitility give you over a sleep-and-check loop?
+How do you test that a background task eventually updates a shared state?
+What is a parameterized test and when does it beat a loop inside one test?
+What is the difference between @MethodSource and @CsvSource for test data?
+What is property-based testing and what is a good property to assert?
+What does shrinking do when a property-based test fails?
+What is mutation testing and what does a surviving mutant reveal about your suite?
+Why is line coverage a weak signal and branch coverage a slightly better one?
+What is a coverage target's failure mode when teams optimize for the number?
+What is the difference between a smoke test and a full regression suite?
+What is a canary release and how does it relate to testing in production?
+What is a golden master test and when is it appropriate?
+What is snapshot testing and what is its maintenance risk?
+What is the difference between a test fixture built fresh per test and one shared across the class?
+What is an object mother and how does it differ from a test data builder?
+Why do test data builders reduce noise in test setup?
+What is the difference between @BeforeEach and a builder for test setup?
+How do you keep test setup readable when an object graph is large?
+What is a test double for a repository and why is an in-memory map often enough?
+How do you test a service that calls three collaborators without over-mocking?
+What is the difference between a sociable and a solitary unit test?
+When is a sociable test that uses real collaborators the better choice?
+What is the test pyramid and what does a large end-to-end layer cost you?
+Why are end-to-end tests slow and flaky, and how do you minimize how many you need?
+What is a contract at the HTTP boundary and how do you test it without a full server?
+What does MockMvc let you test about a Spring controller?
+What does WebTestClient add for reactive endpoints?
+What does @DataJpaTest roll back and what database does it use by default?
+Why is an in-memory database a risky substitute for the production database in tests?
+When should an integration test use Testcontainers instead of H2?
+What is the cost of starting a container per test versus per class?
+How do you assert on logging without coupling to exact message strings?
+How do you test that a metric was incremented?
+What is a test that verifies wiring versus one that verifies logic?
+Why should a bug fix come with a failing test first?
+What is a regression test and where does it live relative to the code it protects?
+What is the difference between testing the happy path and testing the error paths?
+Why are boundary values a high-value place to focus test cases?

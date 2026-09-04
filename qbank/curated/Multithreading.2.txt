@@ -1,0 +1,64 @@
+Why is a long or double read not guaranteed atomic without volatile on some platforms?
+What does making a reference volatile guarantee about the object it points to?
+What is a benign data race and why is it still risky to rely on?
+Why does a simple counter increment need synchronization even though it is one line?
+What are the three parts of a compound action that make i++ non-atomic?
+How does AtomicInteger.incrementAndGet avoid the lost-update problem?
+What is the difference between getAndAdd and addAndGet?
+What is a CAS loop and why can it spin under high contention?
+What is the difference between AtomicReference and a volatile field?
+When would you use AtomicReference.updateAndGet with a lambda?
+What is the difference between a lock's fairness and its reentrancy?
+Why can a fair lock reduce throughput?
+What is lock coarsening and lock splitting as tuning strategies?
+What is lock striping and how does ConcurrentHashMap use the idea?
+What is the difference between holding a lock during IO versus releasing it first?
+Why should you never call an unknown method while holding a lock?
+What is a nested monitor lockout?
+What is the difference between wait in a loop and wait with a timeout?
+Why should notifyAll be preferred over notify in most producer-consumer designs?
+What is a missed signal and how does a condition predicate check prevent it?
+What is the difference between Object.wait and Condition.await?
+Why must you hold the lock to call await or signal on a Condition?
+What is the difference between an ExecutorService and a raw thread for lifecycle management?
+What happens to queued tasks when you call shutdown versus shutdownNow?
+Why should you await termination after calling shutdown?
+What is the risk of an unbounded task queue in a thread pool?
+What is the difference between the caller-runs and abort rejection policies?
+How do you propagate an exception thrown inside a submitted Callable?
+Why does a Runnable submitted with execute swallow its exception by default?
+What is a CompletableFuture and how does it differ from a plain Future for composition?
+What thread runs thenApply versus thenApplyAsync?
+How do you time out a CompletableFuture in Java 9 and later?
+What is the difference between exceptionally and handle on a CompletableFuture?
+What does thenCompose do that thenApply cannot for a method returning a future?
+What is the pitfall of using the common ForkJoinPool for blocking IO?
+How do you supply a custom executor to a parallel stream computation?
+What is the difference between join and get on a CompletableFuture regarding checked exceptions?
+What is a happens-before edge created by starting a thread?
+What is a happens-before edge created by a thread terminating and being joined?
+What is the happens-before relationship between a volatile write and a subsequent volatile read?
+Why does final field semantics let you safely publish an immutable object without synchronization?
+What is unsafe publication and give an example with a non-final field?
+What is the double-checked locking bug prior to Java 5 and what fixed it?
+Why does the singleton holder idiom not need volatile or synchronized?
+What is the difference between ThreadLocal and a parameter passed down the call stack?
+How does a thread pool cause a ThreadLocal to retain stale data?
+Why should you call ThreadLocal.remove at the end of a pooled task?
+What is the difference between a CountDownLatch and a CyclicBarrier for reuse?
+What does the barrier action of a CyclicBarrier do and on which thread does it run?
+What happens to waiting threads if one thread at a CyclicBarrier is interrupted?
+How do you use a Semaphore to implement a connection pool of fixed size?
+What is a binary semaphore and how does it differ from a lock regarding ownership?
+What is the difference between tryAcquire and acquire on a Semaphore?
+What is a Phaser and how does it generalize both latch and barrier behavior?
+What is the difference between blocking a platform thread and parking a virtual thread?
+Why do virtual threads make thread-per-request affordable again?
+What kinds of code pin a virtual thread to its carrier and reduce the benefit?
+What is structured concurrency and how does StructuredTaskScope propagate cancellation?
+What is the difference between cooperative cancellation and forcibly stopping a thread?
+Why was Thread.stop deprecated?
+How do you make a long-running loop responsive to interruption?
+What is the difference between Thread.interrupted and isInterrupted?
+Why does catching InterruptedException and calling Thread.currentThread().interrupt matter?
+What is a thread dump and how do you spot a lock contention hotspot in one?

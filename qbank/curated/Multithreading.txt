@@ -1,0 +1,85 @@
+What is the difference between a process and a thread?
+What is the difference between concurrency and parallelism?
+What are the ways to create a thread in Java?
+Why is implementing Runnable usually preferred over extending Thread?
+What is the difference between calling start() and calling run() on a Thread?
+What happens if you call start() twice on the same Thread?
+What are the states in the Thread lifecycle?
+What is the difference between a daemon thread and a user thread?
+When does the JVM exit with respect to daemon and non-daemon threads?
+What does Thread.yield() actually do and is it reliable?
+What is the difference between sleep() and wait()?
+Why must wait(), notify(), and notifyAll() be called from a synchronized context?
+What is the difference between notify() and notifyAll() and when is notify() dangerous?
+What is a spurious wakeup and why should wait() always be in a loop?
+What is a monitor and what does synchronized acquire?
+What is the difference between synchronizing on a method and on a block?
+What is the difference between synchronizing on an instance and on the class object?
+What is lock reentrancy and does synchronized provide it?
+What is the volatile keyword and what two guarantees does it provide?
+What does volatile not provide that synchronized does?
+When is volatile sufficient and when do you need an atomic or a lock?
+What is the happens-before relationship in the Java Memory Model?
+What are some sources of happens-before edges besides synchronized?
+What is instruction reordering and how does it break naive double-checked locking?
+How do you correctly implement the double-checked locking idiom?
+What is a data race and how is it different from a race condition?
+What is the difference between a race condition and a deadlock?
+What are the four conditions required for a deadlock?
+How do you prevent deadlock by lock ordering?
+What is a livelock and how does it differ from a deadlock?
+What is thread starvation and what can cause it?
+What is a ReentrantLock and what does it offer over synchronized?
+What is the advantage of tryLock with a timeout?
+What is a fair lock and what is the throughput cost of fairness?
+What is a ReadWriteLock and when does it help?
+What is lock downgrading and can you upgrade a read lock to a write lock?
+What is a StampedLock and what is optimistic reading?
+What is a Condition object and how does it relate to wait/notify?
+What is the ExecutorService and why prefer it over creating threads directly?
+What is the difference between submit() and execute()?
+What does Future.get() do and how do you make it time out?
+How do you size a thread pool for CPU-bound versus IO-bound work?
+What is the difference between a fixed, cached, and single-thread executor?
+What is the danger of Executors.newCachedThreadPool under load?
+What is the ThreadPoolExecutor's rejection policy and what are the built-in options?
+What is the difference between the core pool size and the maximum pool size?
+What is a ScheduledExecutorService used for?
+Why should you always shut down an ExecutorService and what is the difference between shutdown and shutdownNow?
+What is CompletableFuture and how does it improve on Future?
+What is the difference between thenApply, thenCompose, and thenCombine?
+Which thread runs a thenApply callback and how do you control that?
+How do you handle an exception in a CompletableFuture pipeline?
+What is the difference between allOf and anyOf?
+What is the ForkJoinPool and the work-stealing algorithm?
+What is the difference between RecursiveTask and RecursiveAction?
+What is the common ForkJoinPool and what uses it by default?
+What is a parallel stream's threading model and what are its risks?
+What is an AtomicInteger and how does compareAndSet work?
+What is the ABA problem and how does AtomicStampedReference address it?
+What is a LongAdder and when is it better than an AtomicLong?
+What is the difference between an atomic operation and a synchronized block for a counter?
+What is a ThreadLocal and what problem does it solve?
+How can ThreadLocal cause a memory leak in a thread pool?
+What is an InheritableThreadLocal?
+What is a CountDownLatch and can it be reused?
+What is a CyclicBarrier and how does it differ from a CountDownLatch?
+What is a Semaphore and how do you use it to limit concurrent access?
+What is a Phaser and when would you choose it over a CyclicBarrier?
+What is an Exchanger?
+What is the producer-consumer problem and how do you solve it with a BlockingQueue?
+What is thread confinement and how does it avoid the need for synchronization?
+What does it mean for a class to be thread-safe?
+What is the difference between thread-safe, conditionally thread-safe, and thread-compatible?
+What is an immutable object's role in concurrent programming?
+What is safe publication and what are the safe ways to publish an object?
+Why is a partially constructed object dangerous to share across threads?
+What is the difference between stopping a thread with a flag versus interrupt()?
+How does the interruption mechanism work and what does InterruptedException signal?
+Why should you not swallow InterruptedException?
+What is a busy-wait and why is it wasteful?
+What is context switching and what is its cost?
+What is false sharing and how does padding mitigate it?
+What is a virtual thread and how does it change thread pool sizing?
+What is structured concurrency and what problem does it address?
+What is the difference between blocking and non-blocking IO in a threading context?

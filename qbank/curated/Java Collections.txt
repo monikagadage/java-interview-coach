@@ -1,0 +1,84 @@
+What is the Java Collections Framework and what are its core interfaces?
+What is the difference between Collection and Collections?
+What is the difference between a List, a Set, and a Map?
+What is the difference between ArrayList and LinkedList?
+When does LinkedList actually outperform ArrayList?
+What is the amortized cost of adding to an ArrayList and why is it amortized?
+How does ArrayList grow its backing array?
+Why is random access O(1) for ArrayList but O(n) for LinkedList?
+What is the difference between Vector and ArrayList?
+What is CopyOnWriteArrayList and when is it appropriate?
+How does HashMap work internally?
+What happens when two keys hash to the same bucket in a HashMap?
+At what point does a HashMap bucket convert from a linked list to a tree?
+What is the default initial capacity and load factor of a HashMap?
+What happens during a HashMap resize and why can it be expensive?
+Why should HashMap keys be immutable?
+What goes wrong if a key's hashCode changes after it is put in a map?
+How is null handled as a key and as a value across HashMap, Hashtable, and TreeMap?
+What is the difference between HashMap and LinkedHashMap?
+How do you use LinkedHashMap to build an LRU cache?
+What is the difference between HashMap and TreeMap?
+What ordering does TreeMap provide and what does it require of keys?
+What is the difference between Hashtable and ConcurrentHashMap?
+How does ConcurrentHashMap achieve thread safety without locking the whole map?
+Why can't you rely on size() being exact for a ConcurrentHashMap under concurrent writes?
+What is the difference between HashSet, LinkedHashSet, and TreeSet?
+How is HashSet implemented in terms of HashMap?
+What is the difference between Comparable and Comparator?
+When would you implement Comparable versus pass a Comparator?
+What does it mean for a Comparator to be inconsistent with equals and why does it matter for TreeSet?
+How do you build a Comparator that sorts by one field then another?
+What does Comparator.reversed() and Comparator.nullsFirst() do?
+What is a fail-fast iterator and how does it detect concurrent modification?
+What is the difference between fail-fast and fail-safe iterators?
+How do you remove an element from a collection while iterating without a ConcurrentModificationException?
+What is the difference between Iterator and ListIterator?
+What is the difference between Iterator.remove and Collection.remove during iteration?
+What is the difference between Queue, Deque, and Stack?
+Why is the legacy Stack class discouraged in favor of ArrayDeque?
+What is the difference between offer/poll/peek and add/remove/element on a Queue?
+How does PriorityQueue order its elements and what is the cost of its operations?
+Is PriorityQueue's iterator ordered?
+What is a BlockingQueue and where is it used?
+What is the difference between ArrayBlockingQueue and LinkedBlockingQueue?
+What is the difference between peek and poll on a Deque used as a stack?
+What are the unmodifiable and synchronized wrappers in Collections?
+What is the difference between Collections.unmodifiableList and List.copyOf?
+What is the difference between Collections.emptyList and a new empty ArrayList?
+What does Collections.sort use as its algorithm and what are its guarantees?
+What is a stable sort and why does it matter?
+How do you make a collection thread-safe and what are the limits of Collections.synchronizedList?
+What is the difference between Arrays.asList and List.of in terms of mutability?
+Why does List.of throw on null elements?
+What is the difference between a HashMap's keySet, values, and entrySet views?
+Can you modify a map through its entrySet view?
+What is the load factor's effect on time and space trade-offs?
+How do you size a HashMap to avoid resizing if you know the element count?
+What is the difference between containsKey and get returning null?
+What does getOrDefault add over containsKey plus get?
+What does computeIfAbsent do and what is a common bug with it and recursive calls?
+What is the difference between merge and compute on a Map?
+What is the difference between putIfAbsent and computeIfAbsent for expensive values?
+How do you invert a Map so values become keys?
+What is a NavigableMap and what operations does it add over SortedMap?
+What do floorKey, ceilingKey, higherKey, and lowerKey return?
+What is a subMap view and is it backed by the original map?
+What is an IdentityHashMap and when is it useful?
+What is a WeakHashMap and what determines when its entries disappear?
+What is an EnumMap and why is it faster than a HashMap for enum keys?
+What is the difference between a Spliterator and an Iterator?
+How does a collection's spliterator enable parallel streams?
+What is the difference between the initial capacity and the size of a collection?
+Why does removing from the middle of an ArrayList shift elements?
+What is the complexity of contains on an ArrayList versus a HashSet?
+How would you find duplicates in a list using collections?
+How would you count the frequency of each element in a list?
+What data structure would you use for a most-recently-used ordering?
+What is the difference between shallow and deep copy for a List of mutable objects?
+What is the risk of storing arrays as keys in a HashMap?
+How do you make a defensive copy of a Map passed into a constructor?
+What is the difference between clear() and assigning a new empty collection?
+Why might iterating a HashMap produce a different order across JVM runs?
+What is the trade-off of a linked structure versus an array-backed structure for a queue?
+What collection would you choose for a fixed-size sliding window?

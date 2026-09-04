@@ -1,0 +1,76 @@
+What is the difference between the JDK, the JRE, and the JVM?
+What are the main subsystems of the JVM?
+What are the phases of class loading?
+What is the difference between loading, linking, and initialization of a class?
+When is a class initialized versus merely loaded?
+What is the classloader hierarchy and what is the parent delegation model?
+Why does parent delegation matter for security?
+What is a custom classloader used for?
+What is ClassNotFoundException versus NoClassDefFoundError?
+What runtime memory areas does the JVM define?
+Which memory areas are shared across threads and which are per-thread?
+What lives on the heap versus the stack?
+What is stored in the method area or metaspace?
+What replaced PermGen and why?
+What is a stack frame and what does it contain?
+What causes a StackOverflowError?
+What causes an OutOfMemoryError and what are the different flavors of its message?
+How do you diagnose a memory leak in a long-running Java service?
+What is a heap dump and what tools analyze one?
+What is the difference between the young generation and the old generation?
+What is a minor GC versus a major or full GC?
+What is the generational hypothesis that GC design relies on?
+What are the roles of Eden and the survivor spaces?
+What is object promotion or tenuring?
+What are GC roots?
+What is the difference between reachable, softly reachable, weakly reachable, and phantom reachable?
+What is the difference between a SoftReference, a WeakReference, and a PhantomReference?
+When would you use a WeakReference in application code?
+What is a ReferenceQueue and how is it used with PhantomReference?
+What is the difference between the Serial, Parallel, CMS, G1, and ZGC collectors?
+What kind of workload is G1 designed for?
+What is a stop-the-world pause and why do collectors try to minimize it?
+What are concurrent and incremental collection strategies trying to achieve?
+What is the difference between throughput and latency as GC tuning goals?
+What do the -Xms and -Xmx flags control and why set them equal in production?
+What does -Xss control?
+How do you enable and read GC logs?
+What is an allocation rate and why does it drive GC frequency?
+What is the TLAB and how does it speed up allocation?
+What is escape analysis and what optimizations does it enable?
+What is scalar replacement?
+What is lock elision and biased locking?
+What is the JIT compiler and how does it differ from interpretation?
+What is the difference between the C1 and C2 compilers?
+What is tiered compilation?
+What is a hot spot and how does the JVM decide to compile a method?
+What is on-stack replacement?
+What is deoptimization and what triggers it?
+What is method inlining and why does it matter for performance?
+Why does JVM code need a warmup period before benchmarking?
+What is the difference between javac bytecode and machine code?
+What does the javap tool show you?
+What is the constant pool in a class file?
+What is bytecode verification and what does it check?
+What is invokedynamic and what feature relies on it?
+How are lambdas compiled and how do they differ from anonymous classes at the bytecode level?
+What is the difference between a checked exception and an unchecked one from the JVM's perspective?
+What is a safepoint and why can it delay a GC or a thread dump?
+What is a thread dump and how do you capture one?
+How do you read a thread dump to find a deadlock?
+What is the difference between CPU time and wall-clock time when profiling?
+What is a flame graph and what does it help you see?
+What is the difference between sampling and instrumenting profilers?
+What is Java Flight Recorder and what overhead does it add?
+What is the module system and what does it add over the classpath?
+What is the difference between the classpath and the module path?
+What is a split package and why does the module system forbid it?
+What does the JVM do at startup before your main method runs?
+What is class data sharing and how does it speed up startup?
+What is ahead-of-time compilation and how does GraalVM native image use it?
+What are the trade-offs of a native image versus running on the JVM?
+What is the difference between -client and -server mode historically?
+How does the JVM handle integer and floating-point arithmetic differently from the CPU in edge cases?
+What is strictfp and why is it now the default?
+What is the difference between a soft limit and a hard limit on the heap in a container?
+Why did older JVMs misread container memory limits and how was that fixed?

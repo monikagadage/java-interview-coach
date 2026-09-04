@@ -1,0 +1,75 @@
+What is a design pattern and what are the three GoF categories?
+What is the difference between a creational, structural, and behavioral pattern?
+What is the Singleton pattern and what are its drawbacks?
+How do you make a Singleton thread-safe without a performance penalty?
+Why is an enum the recommended way to implement a Singleton in Java?
+How does Singleton hurt testability and how do you mitigate that?
+What is the difference between Singleton and a static utility class?
+What is the Factory Method pattern?
+What is the Abstract Factory pattern and how does it differ from Factory Method?
+When would you use a static factory method instead of a full factory class?
+What is the Builder pattern and what problem does it solve?
+How does the Builder pattern handle required versus optional parameters?
+What is a fluent interface and how does it relate to Builder?
+What is the Prototype pattern and how does it relate to cloning?
+What is the Object Pool pattern and when is it worth the complexity?
+What is the Adapter pattern and give a real JDK example?
+What is the difference between an object adapter and a class adapter?
+What is the Decorator pattern and how does java.io use it?
+What is the difference between Decorator and inheritance for adding behavior?
+What is the Facade pattern?
+What is the Proxy pattern and what are its common variants?
+How does Spring use dynamic proxies to implement transactions and AOP?
+What is the Composite pattern and where does it appear in UI toolkits?
+What is the Bridge pattern and what does "decouple abstraction from implementation" mean?
+What is the Flyweight pattern and how does Integer caching use it?
+What is the Strategy pattern and how do lambdas simplify it in Java?
+What is the difference between Strategy and Template Method?
+What is the Template Method pattern and what is the hook method?
+What is the Observer pattern and what are its memory-leak risks?
+Why were java.util.Observable and Observer deprecated?
+What is the Command pattern and how does it enable undo?
+What is the Chain of Responsibility pattern and where does a servlet filter chain fit?
+What is the State pattern and how does it differ from a switch on an enum?
+What is the Iterator pattern and how does Java's Iterator interface embody it?
+What is the Mediator pattern?
+What is the Memento pattern?
+What is the Visitor pattern and what is the double-dispatch trick?
+What is the Interpreter pattern and when is it appropriate?
+What is the Null Object pattern?
+What are the SOLID principles?
+What is the Single Responsibility Principle and how do you spot a violation?
+What is the Open/Closed Principle and how do patterns like Strategy support it?
+What is the Liskov Substitution Principle and give a violating example?
+What is the Interface Segregation Principle?
+What is the Dependency Inversion Principle and how does it differ from dependency injection?
+What is the difference between dependency inversion and dependency injection?
+What is a code smell and name five common ones?
+What is the difference between refactoring and rewriting?
+What is composition over inheritance and why is it a default guideline?
+What is the DRY principle and when can over-applying it hurt?
+What is the YAGNI principle?
+What is the difference between an anemic domain model and a rich domain model?
+What is the Repository pattern and what does it abstract?
+What is the Unit of Work pattern?
+What is the DTO pattern and why separate DTOs from domain entities?
+What is the difference between a DTO and a value object?
+What is the Service Layer pattern?
+What is the MVC pattern and what belongs in each part?
+What is the difference between MVC, MVP, and MVVM?
+What is dependency injection's relationship to the Hollywood Principle?
+What is the Specification pattern for composable business rules?
+What is an anti-corruption layer in domain-driven design?
+What is the Circuit Breaker pattern and what states does it have?
+What is the Bulkhead pattern?
+What is the Retry pattern and why does it need backoff and a cap?
+What is the Saga pattern for distributed transactions?
+What is the Publish-Subscribe pattern and how does it differ from Observer?
+What is event sourcing and what are its trade-offs?
+What is CQRS and when is the added complexity justified?
+What is the Sidecar pattern?
+What is idempotency and why is it a key property for message handlers?
+What is the difference between orchestration and choreography for workflows?
+What is a domain event and how does it decouple aggregates?
+What is the Strangler Fig pattern for migrating a legacy system?
+When should you not use a design pattern?
