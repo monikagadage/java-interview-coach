@@ -1,0 +1,75 @@
+What is JDBC and what are its core interfaces?
+What is the difference between Statement, PreparedStatement, and CallableStatement?
+Why does PreparedStatement help with both performance and security?
+What is SQL injection and how do parameterized queries prevent it?
+What is a ResultSet and what does a forward-only, read-only cursor mean?
+What is JDBC batch processing and when does it help?
+What is autocommit mode and why do you usually turn it off for multi-statement work?
+What is a transaction and what do the ACID properties mean?
+What does atomicity guarantee and how is it implemented with a write-ahead log?
+What does consistency mean in the ACID sense versus the CAP sense?
+What does isolation control and what anomalies can occur without it?
+What are the four standard isolation levels?
+What is a dirty read and which isolation level prevents it?
+What is a non-repeatable read and which isolation level prevents it?
+What is a phantom read and which isolation level prevents it?
+What is serializable isolation and what is its cost?
+What is snapshot isolation and how does MVCC provide it?
+What is the difference between optimistic and pessimistic locking?
+How does a version column implement optimistic locking?
+What is a deadlock in a database and how does the engine resolve it?
+What is a lock escalation?
+What is the difference between a shared lock and an exclusive lock?
+What is an index and what data structure typically backs one?
+How does a B-tree index make lookups fast?
+What is a clustered index versus a non-clustered index?
+What is a covering index and how does it avoid a table lookup?
+What is index selectivity and why does low selectivity make an index useless?
+What is a composite index and why does column order matter?
+What is the leftmost prefix rule for composite indexes?
+Why can a function applied to a column in a WHERE clause prevent index use?
+What is an index scan versus a sequential scan and when does the planner choose each?
+What is the cost of maintaining indexes on write-heavy tables?
+What is a full table scan and when is it actually the right plan?
+What is query planning and what does EXPLAIN show you?
+What are table statistics and why do stale statistics cause bad plans?
+What is database normalization and what are the first three normal forms?
+What problems does normalization prevent?
+When would you deliberately denormalize and what do you trade away?
+What is a primary key versus a unique constraint?
+What is a foreign key and what does ON DELETE CASCADE do?
+What is a surrogate key versus a natural key?
+What is the difference between an INNER JOIN and a LEFT OUTER JOIN?
+What does a CROSS JOIN produce and when is it a bug?
+What is the difference between WHERE and HAVING?
+What is the difference between GROUP BY and window functions for aggregates?
+What is a correlated subquery and why can it be slow?
+What is the difference between UNION and UNION ALL?
+What is the difference between DELETE, TRUNCATE, and DROP?
+What is a view and what is a materialized view?
+What is a stored procedure and what are the arguments for and against using one?
+What is connection pooling and why is opening a connection expensive?
+What does HikariCP tune and what does a too-small or too-large pool cause?
+What is the N+1 query problem and how do you detect it?
+How do you fix an N+1 problem with a join fetch or a batch size?
+What is lazy versus eager loading in an ORM?
+What is the difference between an ORM's persistence context and the database?
+What is a dirty checking mechanism in an ORM?
+What is the difference between save, persist, and merge in JPA?
+What is the difference between the first-level and second-level cache?
+What is optimistic locking failure and how should the application handle it?
+What is eventual consistency and when is it acceptable?
+What is the CAP theorem and what does choosing AP versus CP mean in practice?
+What is sharding and what makes choosing a shard key hard?
+What is read replication and what is replication lag?
+What is a primary-replica failover and what can go wrong during one?
+What is an idempotent write and why does it matter for retries?
+What is a database migration and why should schema changes be versioned?
+How do you add a NOT NULL column to a large table without a long lock?
+What is the difference between a soft delete and a hard delete?
+What is a composite transaction across two services and why is two-phase commit discouraged?
+What is the outbox pattern and what problem does it solve?
+What is an OLTP workload versus an OLAP workload?
+What is a bloom filter and how do databases use it to skip lookups?
+What is a write-ahead log and how does it enable crash recovery?
+What is connection leak and how do you detect one?

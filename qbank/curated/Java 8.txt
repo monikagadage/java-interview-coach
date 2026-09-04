@@ -1,0 +1,82 @@
+What are the headline features introduced in Java 8?
+What is a lambda expression and how does it relate to a functional interface?
+What is a functional interface and what does the @FunctionalInterface annotation enforce?
+Can a functional interface declare more than one abstract method?
+What are the standard functional interfaces in java.util.function?
+What is the difference between Function, Supplier, Consumer, and Predicate?
+What is a BiFunction and where is it used in the Stream API?
+What is the difference between a lambda and an anonymous inner class in terms of this?
+Why can a lambda only capture effectively final local variables?
+What is a method reference and what are its four kinds?
+When can you replace a lambda with a method reference and when can't you?
+What is a constructor reference and where is it useful?
+What is the Stream API and how does it differ from a collection?
+What is the difference between a stream and an Iterator?
+What is the difference between intermediate and terminal operations?
+Why are streams described as lazy?
+What is a short-circuiting operation and give two examples?
+Can you reuse a stream after a terminal operation?
+What is the difference between map and flatMap?
+When would you use flatMap on a stream of lists?
+What does filter do and how does predicate order affect performance?
+What is the difference between findFirst and findAny?
+What is the difference between limit and skip?
+What does distinct rely on to detect duplicates?
+What does sorted require of the stream elements and how do you sort by a key?
+What is the difference between forEach and forEachOrdered?
+What is a stateful versus a stateless intermediate operation?
+What is the difference between reduce with an identity and reduce without one?
+What are the three forms of reduce and when do you need the third?
+What is a collector and what does Collectors.toList give you about mutability?
+What is the difference between Collectors.toMap and groupingBy?
+What happens if Collectors.toMap encounters duplicate keys?
+How do you supply a merge function to Collectors.toMap?
+What is a downstream collector and give an example with groupingBy?
+How do you count elements per group with a collector?
+What does Collectors.partitioningBy return and how is it different from groupingBy?
+What does Collectors.joining do?
+How do you compute an average or a sum with a collector?
+What is Collectors.mapping used for?
+What is a parallel stream and how do you create one?
+When does parallelizing a stream actually help?
+Why can a parallel stream with a shared mutable accumulator produce wrong results?
+What properties must a reduction be for parallel execution to be correct?
+Why is forEach on a parallel stream not guaranteed to preserve order?
+What is the spliterator's role in stream parallelism?
+Which thread pool executes parallel stream work by default?
+What is an IntStream and why does it exist alongside Stream<Integer>?
+How do you convert a Stream<Integer> to an IntStream and back?
+What does IntStream.range produce and how is it different from rangeClosed?
+What is a boxed stream and when do you need to call boxed()?
+What is Optional and what problem does it address?
+What is the difference between Optional.of, Optional.ofNullable, and Optional.empty?
+Why is calling get() on an Optional without checking considered an anti-pattern?
+What is the difference between orElse and orElseGet?
+When does the argument to orElse get evaluated unnecessarily?
+What does orElseThrow do and what is its no-arg form?
+What is the difference between map and flatMap on an Optional?
+What does ifPresentOrElse add over ifPresent?
+Why should Optional not be used as a field or a method parameter?
+Why should you not return Optional from a collection-returning method?
+What is the java.time package and why was it introduced over java.util.Date?
+What is the difference between LocalDate, LocalDateTime, and ZonedDateTime?
+What is an Instant and how does it relate to epoch time?
+What is the difference between a Period and a Duration?
+How do you handle time zones and daylight saving transitions with java.time?
+Why are java.time classes immutable and thread-safe?
+What is a DateTimeFormatter and is it thread-safe unlike SimpleDateFormat?
+What is a default method and why was it added to interfaces?
+What binary-compatibility problem do default methods solve for library authors?
+What is a static method on an interface used for?
+How does the compiler resolve a conflict between two inherited default methods?
+What is the diamond problem for default methods and how do you resolve it explicitly?
+What is Stream.iterate and Stream.generate and how do you bound an infinite stream?
+What does peek do and why is it mainly a debugging tool?
+What is the difference between Collection.stream and Arrays.stream?
+What does Stream.of do with a single array argument?
+What is a Collector's characteristics set and what do CONCURRENT and UNORDERED mean?
+How would you build a custom collector?
+What is the difference between mapToObj and map on an IntStream?
+What is the summary statistics collector and what does it compute in one pass?
+How do you flatten a Map<K, List<V>> into a stream of entries?
+What is the CompletableFuture connection to Java 8 and functional composition?

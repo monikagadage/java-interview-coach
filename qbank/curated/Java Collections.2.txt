@@ -1,0 +1,62 @@
+Why does inserting into the middle of an ArrayList cost O(n)?
+What is the difference between ensureCapacity and trimToSize on an ArrayList?
+Why does removing the last element of an ArrayList not shrink the backing array?
+What is the difference between a ListIterator's add and a List's add during traversal?
+How do you safely remove multiple elements from a list while iterating?
+What does removeIf do and how does it differ from an iterator-based removal loop?
+Why is subList a view and what breaks if you structurally modify the parent?
+What is the difference between List.of and Arrays.asList for a fixed-size scenario?
+Why does Arrays.asList allow set but not add?
+What is the hashing strategy HashMap uses to spread poor hashCodes?
+Why does HashMap require the number of buckets to be a power of two?
+What is the treeify threshold and the untreeify threshold for a HashMap bucket?
+What must a key's class implement for the treeified bucket to be ordered?
+What is a hash collision denial-of-service attack and how does treeifying mitigate it?
+Why is iteration order of a HashMap not part of its contract?
+What ordering does LinkedHashMap preserve and what does access-order mode do?
+How do you use LinkedHashMap.removeEldestEntry to bound a cache?
+What is the difference between a TreeMap and a HashMap for range queries?
+What do headMap, tailMap, and subMap return and are they live views?
+What does pollFirstEntry do on a NavigableMap?
+Why does TreeSet require either Comparable elements or a Comparator?
+What happens if you add an element to a TreeSet that is not mutually comparable?
+What is the difference between HashSet and LinkedHashSet iteration guarantees?
+What is the load factor's effect on collision probability and memory?
+How would you size a HashMap for 1000 expected entries to avoid a resize?
+What is the difference between ConcurrentHashMap's compute and a get-then-put?
+Why is ConcurrentHashMap.size approximate under concurrent modification?
+What is a weakly consistent iterator and which collections provide one?
+What is the difference between Collections.synchronizedMap and ConcurrentHashMap for compound operations?
+Why does iterating a synchronizedList still require external synchronization?
+What is CopyOnWriteArrayList's cost model and ideal use case?
+What is the difference between a blocking and a non-blocking queue?
+What does ArrayBlockingQueue's bounded capacity give you that LinkedBlockingQueue's default does not?
+What is a SynchronousQueue and where is it used in thread pools?
+What is a DelayQueue used for?
+What is the difference between a PriorityQueue and a PriorityBlockingQueue?
+Is PriorityQueue's toString or iteration in sorted order?
+What is the time complexity of PriorityQueue offer, poll, and peek?
+How would you implement a bounded LRU cache with a LinkedHashMap?
+How would you implement a frequency counter for words in a document?
+What collection would you use to detect the first non-repeating character in a stream?
+What is the difference between an IdentityHashMap and a HashMap for interned versus non-interned keys?
+When would a WeakHashMap's entry be garbage collected?
+Why is a WeakHashMap a poor choice for a general cache?
+What is the difference between Deque used as a stack versus ArrayDeque's null restriction?
+Why can't you store null in an ArrayDeque or a PriorityQueue?
+What is the difference between the fail-fast behavior of ArrayList and the weakly consistent behavior of ConcurrentLinkedQueue?
+What is a NavigableSet and what does ceiling versus higher return?
+What is the difference between Set.of duplicate handling and adding a duplicate to a HashSet?
+What is the difference between the two-argument and three-argument forms of Collectors.toMap?
+How do you convert a Map to a sorted list of entries by value?
+What is the cost of contains on a LinkedList versus a HashSet for membership testing?
+Why is an ArrayList of primitives boxed and what is the memory overhead?
+What third-party or JDK options exist for a primitive-specialized list?
+What is the difference between Stream.toList and Collectors.toList regarding mutability?
+How do you make an immutable copy of a Map passed into a constructor?
+What is a structural modification versus a non-structural modification for a fail-fast iterator?
+What is the difference between modifying a value in a map and adding a new key during iteration?
+Why does Map.forEach throw if the map is modified inside the lambda?
+What is the difference between a HashMap resize and a rehash?
+How does the number of entries relate to the threshold that triggers a resize?
+What is the worst-case lookup complexity of a HashMap before and after treeifying?

@@ -1,0 +1,62 @@
+Why can a lambda not modify a local variable from its enclosing scope?
+How do you accumulate state from a stream without a mutable captured variable?
+What is the difference between a lambda capturing this and an anonymous class capturing this?
+Why does a lambda not create a new scope for the this reference?
+What is a capturing versus a non-capturing lambda and does it affect allocation?
+How is a non-capturing lambda cached by the JVM?
+What is the difference between Runnable, Callable, and Supplier as lambda targets?
+When is a target type ambiguous for a lambda and how do you disambiguate?
+What is the difference between an unbound and a bound instance method reference?
+How does String::length differ from someString::length as a method reference?
+What is a constructor reference for an array type?
+Why is a terminal operation required for any stream work to happen?
+What is operation fusion in a stream pipeline?
+Why does filter before map usually beat map before filter?
+What is the difference between a stateless and a stateful intermediate operation for parallelism?
+Why can sorted on an infinite stream never terminate?
+What does takeWhile do and how is it different from filter?
+What does dropWhile do?
+What is the difference between findFirst and findAny on a parallel stream?
+Why might findAny be faster than findFirst in parallel?
+What does mapMulti add over flatMap in newer Java?
+What is the difference between count on a stream with and without a filter, and the short-circuit optimization?
+Why can peek's side effects be skipped by the JVM under certain optimizations?
+What is the difference between Collectors.toUnmodifiableList and toList?
+How do you group by a key and then map each group's values?
+How do you group by a key and count the entries in each group?
+How do you group by a key and sum a numeric field per group?
+What does Collectors.reducing do and when do you need it over a plain reduce?
+What is a teeing collector and what does it compute?
+How do you compute both the min and max of a stream in one pass?
+What does IntSummaryStatistics give you and how do you get it from a stream?
+Why is mapToInt often better than map when you only need a numeric reduction?
+What is the boxing cost of Stream<Integer> versus IntStream?
+How do you flatten a stream of arrays into a stream of elements?
+What is the difference between Stream.concat and flatMap of two streams?
+Why should you avoid Stream.iterate without a bound?
+What does the three-argument Stream.iterate add?
+What is the difference between orElse and orElseGet in terms of eager evaluation?
+Give a concrete example where orElse causes an unnecessary and expensive call.
+What is the difference between Optional.filter and Optional.map returning empty?
+Why should Optional not be used as a Map value type?
+What is the difference between Optional.stream and manually checking isPresent?
+Why is Optional.get without isPresent flagged by static analysis?
+What is the difference between Optional.ofNullable and Optional.of for a possibly-null value?
+How do you chain two Optional-returning lookups?
+What is a common bug when using Optional in a stream's map step?
+What is the difference between LocalDateTime and Instant for storing an event timestamp?
+Why should you store timestamps in UTC and convert for display?
+What is a ZoneId versus a ZoneOffset?
+How does java.time handle a daylight saving gap or overlap?
+What is a TemporalAdjuster and give a built-in example?
+Why is DateTimeFormatter thread-safe while SimpleDateFormat is not?
+How do you parse an ISO-8601 string with an offset?
+What is the difference between Duration.between and Period.between?
+What is ChronoUnit and how do you compute the number of days between two dates?
+What is the difference between a default method and an abstract method for interface evolution?
+Why does adding a default method not break existing implementers but adding an abstract method does?
+How does the compiler resolve a class method versus an inherited default method of the same signature?
+What is the syntax to explicitly call a specific interface's default method from an implementing class?
+What is a private interface method used for in Java 9 and later?
+Why can a static interface method not be inherited or overridden?
+What is the difference between a functional interface with a default method and one without for lambda eligibility?

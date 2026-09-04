@@ -1,0 +1,65 @@
+Why does the parent-first delegation model prevent a user class from shadowing java.lang.String?
+What is a context classloader and why do frameworks use it?
+What is classloader leakage and why does it matter for application servers?
+How can a static field in a class loaded by a shared classloader pin an application's classes in memory?
+What is the difference between NoClassDefFoundError at first use versus at load time?
+What is an UnsatisfiedLinkError and when does it occur?
+What triggers class initialization according to the spec?
+Why does accessing a static final compile-time constant not initialize the class?
+What is the order of static initializer execution across a class hierarchy?
+What is a class initialization circular dependency and how does the JVM handle it?
+What is the difference between the operand stack and the local variable array in a frame?
+How many stack frames deep can recursion go and what controls it?
+What is a tail call and why does the JVM not eliminate it?
+What is the difference between the young generation collection frequency and the old generation collection frequency?
+Why are most objects collected in the young generation?
+What is the write barrier and why does a generational collector need one?
+What is a card table and a remembered set?
+What is the difference between a concurrent marking phase and a stop-the-world marking phase?
+What is a floating garbage in a concurrent collector?
+What is the difference between G1's region-based heap and the classic contiguous generations?
+What is a humongous object in G1 and why is it handled specially?
+What tuning goal does the MaxGCPauseMillis flag express for G1?
+What does ZGC trade to achieve sub-millisecond pauses?
+What is a colored pointer and a load barrier in ZGC?
+What is the difference between a soft reference and a weak reference for cache eviction under memory pressure?
+When is a PhantomReference enqueued relative to finalization?
+Why is finalization non-deterministic and potentially never run?
+What is a Cleaner and how do you register a cleanup action for an object?
+What is the risk of the cleanup action holding a strong reference to the object it cleans?
+What is a TLAB and how does it make allocation a pointer bump?
+What happens when a TLAB is full?
+What is escape analysis and what does "the object does not escape the method" enable?
+What is stack allocation of an object and when can the JIT do it?
+What is lock elision and how does escape analysis enable it?
+What is the difference between interpretation, C1 compilation, and C2 compilation?
+What is tiered compilation and why does it start with C1?
+What is a compilation threshold and how do invocation counters and back-edge counters drive it?
+What is on-stack replacement and why is it needed for long-running loops?
+What is a deoptimization and what assumption failure can trigger one?
+What is an uncommon trap?
+Why does the JIT speculate on a monomorphic call site and what happens when a second type appears?
+What is inlining and why does method size limit it?
+Why does a megamorphic call site prevent inlining and devirtualization?
+Why must you warm up the JVM before microbenchmarking?
+What does JMH do to prevent dead-code elimination from invalidating a benchmark?
+What is a blackhole in a benchmark harness?
+What is the difference between javac output and JIT output?
+What does the -XX:+PrintCompilation flag show?
+What does javap -c show and how do you read a simple method's bytecode?
+What is the runtime constant pool versus the class file constant pool?
+What does bytecode verification check before a class is linked?
+What is invokedynamic and how does the lambda metafactory use it?
+Why are lambdas not compiled to anonymous classes at the bytecode level?
+What is a safepoint and why can a tight counted loop delay reaching one?
+Why can a thread dump take a moment to produce under load?
+How do you capture a heap dump on OutOfMemoryError automatically?
+What tools analyze a heap dump to find the dominator of retained memory?
+What is retained size versus shallow size in a heap analysis?
+What is the difference between a memory leak and memory bloat?
+What is the module system's strong encapsulation and how does it differ from package-private?
+What is a split package and why does the module system reject it?
+What is class data sharing and how does it reduce startup time and footprint?
+What does an AOT-compiled native image give up compared to running on the JVM?
+Why is reflection configuration needed for a GraalVM native image?
+How does a container-aware JVM decide the default heap size?

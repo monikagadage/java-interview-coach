@@ -1,0 +1,65 @@
+When does introducing the Strategy pattern add more indirection than value?
+How do you decide between a Strategy object and a simple lambda parameter?
+What is the difference between the Strategy and State patterns in intent?
+How does the State pattern avoid a large conditional that checks the current state?
+What is the trade-off of the State pattern versus an enum with per-constant behavior?
+How does the Template Method pattern differ from composition with a callback?
+Why is the Template Method pattern considered a use of inheritance for reuse?
+What is the Hollywood Principle and how do frameworks embody it?
+How does the Observer pattern lead to memory leaks if listeners are not removed?
+Why is a weak listener registry sometimes used with the Observer pattern?
+What is the difference between push and pull models of the Observer pattern?
+How does an event bus generalize the Observer pattern?
+What is the difference between the Mediator and the Observer patterns?
+How does the Command pattern enable undo, queuing, and logging of operations?
+What is the difference between a Command object and a plain Runnable?
+How does the Chain of Responsibility pattern decide where a request stops?
+What is the risk of a request falling off the end of a responsibility chain?
+How does a servlet filter chain implement Chain of Responsibility?
+What is the Decorator pattern's advantage over subclassing for combining features?
+Why does the java.io stream API use Decorator so heavily?
+What is the difference between the Decorator and Proxy patterns in intent?
+What are the common kinds of Proxy: virtual, protection, remote, and smart reference?
+How does a dynamic proxy differ from a hand-written proxy class?
+What interface must a class implement to be proxied by java.lang.reflect.Proxy?
+Why can CGLIB proxy a class but the JDK proxy cannot?
+What is the Adapter pattern's role when integrating a third-party library?
+What is the difference between an Adapter and a Facade?
+How does the Facade pattern reduce coupling to a subsystem?
+When does a Facade become a leaky abstraction?
+What is the Composite pattern and how does it treat leaves and containers uniformly?
+What is the risk of the Composite pattern for operations that only make sense on leaves?
+What is the Flyweight pattern and what distinguishes intrinsic from extrinsic state?
+How does the JVM's string pool resemble the Flyweight pattern?
+What is the Builder pattern's advantage for an object with many optional fields?
+How do you make a Builder thread-safe or is that usually unnecessary?
+What is a step builder and what does it enforce at compile time?
+What is the difference between a Factory Method and an Abstract Factory?
+When does an Abstract Factory become a maintenance burden as product families grow?
+Why is a Singleton often called an anti-pattern despite being a GoF pattern?
+How does a Singleton make unit testing harder?
+What is the difference between a Singleton and a bean with singleton scope in a container?
+What is the Service Locator pattern and why is dependency injection usually preferred?
+What is the Repository pattern and what does it hide from the domain layer?
+Why should a Repository return domain objects rather than database rows?
+What is the Unit of Work pattern and how does an ORM's session implement it?
+What is the difference between a domain entity and a DTO and why keep them separate?
+What is the anemic domain model anti-pattern?
+What is the difference between orchestration and choreography for a multi-service workflow?
+What is the Saga pattern and what compensating actions does it require?
+What is the difference between a forward recovery and a backward recovery saga?
+What is the Circuit Breaker pattern and what are its closed, open, and half-open states?
+What metric usually trips a circuit breaker from closed to open?
+What is the Bulkhead pattern and how does it contain a failure?
+What is the Retry pattern and why is naive immediate retry harmful?
+Why does a retry policy need jitter in addition to exponential backoff?
+What is the Idempotent Consumer pattern for message handlers?
+What is the Transactional Outbox pattern?
+What is event sourcing and what is a projection?
+What are the downsides of event sourcing for a simple CRUD service?
+What is CQRS and when does splitting the read and write models pay off?
+What is the Sidecar pattern in a service mesh?
+What is the Strangler Fig pattern for incrementally replacing a legacy system?
+What is the Anti-Corruption Layer and what does it translate between?
+What is the difference between a design pattern and an architectural pattern?
+When is copy-paste actually better than introducing a shared abstraction?

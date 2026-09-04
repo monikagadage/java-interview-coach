@@ -1,0 +1,77 @@
+What is the difference between unit, integration, and end-to-end tests?
+What is the test pyramid and what does an inverted pyramid indicate?
+What makes a good unit test according to the FIRST principles?
+What is the difference between a test that is deterministic and one that is flaky?
+What are common causes of flaky tests and how do you fix them?
+What is the arrange-act-assert structure?
+What is the difference between black-box and white-box testing?
+What is code coverage and why is 100% coverage not a goal in itself?
+What is the difference between line coverage and branch coverage?
+What is mutation testing and what does a surviving mutant tell you?
+What is JUnit 5 and how is it structured into Platform, Jupiter, and Vintage?
+What does the @Test annotation do and how has it changed from JUnit 4 to 5?
+What is the lifecycle of @BeforeAll, @BeforeEach, @AfterEach, and @AfterAll?
+Why must @BeforeAll be static by default and how do you change that?
+What is @DisplayName used for?
+What is a parameterized test and what sources can feed it?
+What is the difference between @ValueSource, @CsvSource, and @MethodSource?
+What is @Nested used for?
+What is @Disabled and when is skipping a test acceptable?
+How do you assert that a method throws a specific exception in JUnit 5?
+What is assertAll and why is it better than multiple separate assertions?
+What is a soft assertion?
+What is the difference between assertEquals and assertSame?
+What is a test double and what are its five kinds?
+What is the difference between a stub and a mock?
+What is the difference between a mock and a spy?
+What is a fake and give an example?
+What is a dummy object?
+When should you use a real object instead of a mock?
+What is over-mocking and why does it make tests brittle?
+What is Mockito and what does mock() return by default for unstubbed methods?
+What is the difference between when/thenReturn and doReturn/when?
+When must you use doReturn/when instead of when/thenReturn?
+How do you stub a method to throw an exception with Mockito?
+What is verify() and how do you assert a method was called exactly twice?
+What is an ArgumentCaptor and when do you need one?
+What is an ArgumentMatcher and why can't you mix raw values and matchers?
+What is the difference between a strict and a lenient mock?
+What is @InjectMocks and what are its pitfalls?
+Why can't Mockito mock final classes or static methods without extra configuration?
+What is mockito-inline and what does it enable?
+How do you mock a static method and why is needing to a design smell?
+What is the difference between mocking and using a test container for a database?
+What is Testcontainers and what problem does it solve?
+What is a contract test and why does it help with microservices?
+What is consumer-driven contract testing?
+What is TDD and what is the red-green-refactor cycle?
+What is the difference between TDD and writing tests after the code?
+What is the "transformation priority premise" in TDD?
+What is BDD and how do Given-When-Then map to arrange-act-assert?
+What is a characterization test and when do you write one?
+What is a golden master or approval test?
+What is property-based testing and how does it differ from example-based testing?
+What is shrinking in a property-based testing framework?
+How do you test time-dependent code without sleeping?
+How do you inject a Clock to make time testable?
+How do you test randomness deterministically?
+How do you test a method that reads or writes files?
+How do you test logging output?
+What is the difference between @SpringBootTest and a slice test like @WebMvcTest?
+What does @DataJpaTest configure and what does it roll back?
+What is @MockBean and how does it differ from a plain mock?
+How do you test a REST controller without starting a server?
+What is WebTestClient or MockMvc used for?
+How do you test asynchronous code that completes on another thread?
+What is Awaitility used for?
+How do you test that a message was published to a queue?
+What is a test fixture and what is the setup/teardown cost trade-off?
+What is the difference between shared and fresh fixtures?
+What is an object mother or a test data builder?
+Why should tests avoid logic like loops and conditionals?
+What is a test smell and name three?
+What does it mean for a test to be coupled to implementation details?
+How do you keep tests fast as a suite grows to thousands?
+What is the difference between running tests in isolation and in parallel, and what breaks under parallelism?
+What is a smoke test versus a regression test?
+What is a canary test in production?

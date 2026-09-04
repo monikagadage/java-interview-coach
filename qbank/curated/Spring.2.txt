@@ -1,0 +1,67 @@
+Why does Spring recommend constructor injection for required dependencies?
+How does Spring handle an optional dependency with constructor injection?
+What happens if two beans have a circular constructor dependency?
+How can you break a circular dependency without redesigning?
+What is the difference between @Autowired on a field and on a setter for testability?
+Why is field injection discouraged even though it looks concise?
+What does @Autowired(required = false) do and what is the modern alternative?
+How does Spring choose among multiple candidates without @Qualifier?
+What is the resolution order: type, then qualifier, then name?
+What is a @Lazy bean and when does it actually get created?
+What is the difference between eager and lazy singleton initialization in Spring?
+How do you make all singletons lazy by default in Spring Boot?
+What is the FactoryBean interface and how is it different from a @Bean method?
+What is the difference between ApplicationContext and WebApplicationContext?
+What is the parent-child context relationship in a classic Spring MVC app?
+What is a BeanDefinition and who registers them?
+What does @Import do in a configuration class?
+What is an ImportSelector and where is it used in auto-configuration?
+What is spring.factories or the newer AutoConfiguration.imports file for?
+How does @ConditionalOnClass make auto-configuration safe when a dependency is absent?
+What is the difference between @ConditionalOnProperty and a profile?
+How do you override a bean defined by auto-configuration?
+What does @SpringBootTest(webEnvironment = RANDOM_PORT) start?
+What is the difference between @SpringBootTest and @ContextConfiguration?
+How does Spring cache the application context across test classes?
+What is a dirty context and how does @DirtiesContext affect the test suite speed?
+What is the difference between @MockBean and @SpyBean?
+Why does @MockBean reset between test methods?
+What does @TestConfiguration let you add to a test's context?
+How do you test a @Scheduled method without waiting for the schedule?
+What is the difference between @Transactional on a test and on a service?
+Why does a test annotated @Transactional roll back by default?
+What is the difference between propagation REQUIRED and NESTED?
+What is a savepoint and how does NESTED propagation use one?
+Why does an exception caught inside a @Transactional method still mark the transaction rollback-only sometimes?
+What is TransactionSynchronization used for?
+How does Spring decide whether to use a JDK proxy or a CGLIB proxy for a bean?
+What configuration forces CGLIB proxying for all beans?
+Why can't a final method be advised by Spring AOP with CGLIB?
+What is the self-invocation problem and how do you work around it?
+What is the difference between @Cacheable, @CachePut, and @CacheEvict?
+Why does calling a @Cacheable method from within the same class bypass the cache?
+What is the difference between @Async and running work on an explicit executor?
+Why must an @Async method return void or a Future, not a plain value?
+What is the default executor for @Async and why should you configure your own?
+What is the difference between RestTemplate and WebClient?
+Why is RestTemplate in maintenance mode?
+How do you set a connection and read timeout on a WebClient?
+What is a filter versus an interceptor versus a controller advice for cross-cutting HTTP concerns?
+What is the order of a servlet filter chain relative to Spring's DispatcherServlet?
+What does @RequestBody do if the JSON has an unknown property?
+How do you configure Jackson to fail or ignore on unknown properties?
+What is the difference between @Valid and @Validated?
+Where do you handle a MethodArgumentNotValidException globally?
+What is the difference between returning ResponseEntity and a plain object from a controller?
+How do you stream a large response without buffering it all in memory?
+What is HATEOAS and does Spring require it for REST?
+What is the difference between server-side and client-side load balancing in Spring Cloud?
+What is a circuit breaker and how does Resilience4j integrate with Spring?
+What is the difference between application properties and a config server in Spring Cloud Config?
+How does Spring Boot expose readiness versus liveness probes?
+What is the difference between an info endpoint and a health endpoint in Actuator?
+How do you secure Actuator endpoints in production?
+What is the Spring Security filter chain and where does authentication happen?
+What is a SecurityContext and how is it bound to the thread?
+How does the SecurityContext propagate to an @Async thread?
+What is the difference between a stateful session and a stateless JWT authentication in Spring Security?

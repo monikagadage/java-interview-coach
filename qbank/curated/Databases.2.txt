@@ -1,0 +1,66 @@
+Why is a PreparedStatement reused across calls faster than building SQL strings?
+What is statement caching and where does it live, in the driver or the pool?
+What is the difference between executeQuery, executeUpdate, and execute?
+How do you retrieve a generated primary key after an insert with JDBC?
+What is the default fetch size and why does it matter for large result sets?
+What is a scrollable result set and why is it rarely worth the cost?
+How do you stream a million rows from a database without loading them all into memory?
+What is the difference between a transaction's read view under READ COMMITTED and REPEATABLE READ?
+What is write skew and which isolation level prevents it?
+What is a lost update and how do optimistic and pessimistic locking each prevent it?
+What is a gap lock and which isolation level uses it?
+What is a next-key lock?
+What is deadlock detection versus deadlock prevention in a database engine?
+Why do transactions that touch rows in different orders risk deadlock?
+What is a long-running transaction's impact on vacuum or undo log growth?
+What is MVCC and how does it let readers not block writers?
+What is a tuple version and how does a database clean up dead versions?
+What is the difference between a primary key index and a secondary index lookup cost?
+Why does a secondary index lookup often require a second read to the clustered index?
+What is an index-only scan and what makes it possible?
+What is a partial or filtered index and when is it useful?
+What is a functional or expression index?
+Why does wrapping a column in a function in the WHERE clause defeat its index?
+What is a composite index and why does querying only the second column not use it?
+What is the difference between an equality predicate and a range predicate for composite index usage?
+What is cardinality estimation and how does a wrong estimate cause a bad plan?
+What is a nested loop join versus a hash join versus a merge join?
+When does the planner prefer a hash join?
+What is a sort-merge join and what does it require of the inputs?
+What is a bitmap index scan?
+What does EXPLAIN ANALYZE add over EXPLAIN?
+What is the difference between planning time and execution time in a query plan?
+What is a covering index for a specific query?
+What is denormalization and what consistency burden does it add?
+What are the anomalies that 2NF and 3NF each remove?
+What is BCNF and how does it differ from 3NF?
+What is a star schema and why is it common for analytics?
+What is the difference between OLTP and OLAP access patterns and storage layout?
+What is a columnar store and why is it fast for aggregations?
+What is the N+1 query problem in an ORM and how do you detect it in logs?
+What is a join fetch versus a batch fetch strategy for fixing N+1?
+What is the difference between lazy and eager fetching and the LazyInitializationException?
+What is the first-level cache in an ORM and its scope?
+What is dirty checking and how does it decide what to flush?
+What is the difference between save, persist, merge, and saveOrUpdate?
+What is a detached entity and how does merge handle it?
+What is optimistic locking with a version column and what exception signals a conflict?
+How should an application respond to an optimistic lock failure?
+What is connection pooling and why is the sweet spot often a small pool?
+What does a too-large connection pool do to the database?
+What is a connection leak and how does a pool detect an abandoned connection?
+What is the difference between a validation query and JDBC isValid for pool health checks?
+What is idempotency and why does a payment API need an idempotency key?
+What is the outbox pattern and what dual-write problem does it solve?
+What is change data capture and how does it relate to the outbox pattern?
+What is a saga and how does it replace a distributed transaction?
+Why is two-phase commit discouraged for microservices?
+What is eventual consistency and how do you design a UI around it?
+What does the CAP theorem force you to choose during a network partition?
+What is read-your-writes consistency and why do read replicas break it?
+What is replication lag and how do you route reads to avoid stale data?
+What is a shard key and what makes a bad one?
+What is a hotspot in a sharded database and how does key design cause it?
+How do you add a non-null column to a huge table without a long exclusive lock?
+Why should schema migrations be backward compatible during a rolling deploy?
+What is the expand-and-contract pattern for schema changes?
