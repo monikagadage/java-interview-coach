@@ -17,9 +17,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # The selection + persistence logic is deliberately free of the heavy
-      # app stack (ChromaDB, LangChain, Streamlit), so CI runs it with just
-      # pytest. test_cli.py self-skips without the full deps; the complete
-      # 45-test suite runs locally via `uv run pytest`.
-      - run: pip install pytest
+      # The selection, persistence, and MCP-tool logic are deliberately free
+      # of the heavy app stack (ChromaDB, LangChain, Streamlit), so CI runs
+      # them with just pytest + the (lightweight) mcp SDK. test_cli.py
+      # self-skips without the full deps; the complete suite runs locally
+      # via `uv run pytest`.
+      - run: pip install pytest "mcp>=1.6,<2"
       - run: pytest tests/ -v

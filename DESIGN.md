@@ -4,9 +4,9 @@ Architecture and data model for Java Interview Coach. See [README.md](README.md)
 
 ## Architecture overview
 
-Two pipelines feed into two interchangeable UIs (Streamlit's `app.py`, or `cli.py`'s stdin
-loop) that each drive the exact same LangGraph-style workflow — one button click, or one
-`input()` call, at a time.
+Two pipelines feed into three interchangeable front-ends (Streamlit's `app.py`, `cli.py`'s
+stdin loop, or the `mcp_server/` MCP tools) that each drive the exact same LangGraph-style
+workflow — one button click, one `input()` call, or one tool call, at a time.
 
 ```mermaid
 flowchart TD
@@ -178,6 +178,42 @@ cumulative stats carry over between the two.
 and only the `evaluate` node's actual network call does. See Known limitations below for
 exactly how far this was verified to run in this environment.
 
+### MCP server (round 3)
+
+`mcp_server/` exposes the coach over the [Model Context Protocol](https://modelcontextprotocol.io)
+as a third front-end alongside Streamlit and the CLI, so any MCP client (Claude Desktop,
+Claude Code, Cursor, VS Code) can run mock interviews using the same retrieval, grading,
+persistence, and spaced-repetition logic.
+
+- **Layering.** `mcp_server/tools.py` is the tool logic as plain functions with heavy
+  dependencies passed in (`collection`, `llm`, `db_path`). It imports only `memory.store`
+  and `topics` at module level — deliberately *not* `graph.workflow` (which pulls the whole
+  LangChain/LangGraph chain) or `chromadb` or `mcp`. The 3-line RAG `query` call and the
+  evaluate/hint prompt text are inlined / moved to `prompts.py` so the module stays light.
+  Result: all nine tools are unit-tested with just `pytest` + a temp SQLite file + a fake
+  collection / fake LLM (`tests/test_mcp_tools.py`).
+- **Wire layer.** `mcp_server/server.py` is the only file that imports `mcp`. It wraps each
+  `tools.py` function with `@mcp.tool()`, adds three resources
+  (`interview://topics`, `interview://progress`, `interview://question-bank/{topic}`) and a
+  `mock_interview` prompt, and owns the lazily-built ChromaDB collection and `ChatGroq`
+  client — so `list_tools` and the store-backed tools respond instantly and a missing
+  `GROQ_API_KEY` only surfaces (as a clear `RuntimeError`) if a grading tool is actually
+  called.
+- **Transports.** `python -m mcp_server` runs stdio (local clients); `--http` runs
+  FastMCP's streamable-HTTP on `MCP_HOST`/`MCP_PORT` (default `127.0.0.1:8000/mcp`) for a
+  hosted deployment. Both were smoke-tested with a real MCP client handshake.
+- **Sessions.** MCP tool calls are stateless, so `evaluate_answer` only records an attempt
+  when the caller threads through a `session_id` from `start_session` (plus a `topic`).
+  Without them it still grades, just doesn't persist — the `mock_interview` prompt tells the
+  client to always pass them.
+- **`mcp` version.** Pinned to `>=1.6,<2`: v2.x renamed `FastMCP` to `MCPServer` and
+  changed the API, and the v1 `FastMCP` surface is what current client docs and examples
+  assume.
+
+`topics.py` and `prompts.py` were extracted in this round so the CLI, the workflow graph,
+and the MCP server share one topic list and one set of prompt strings instead of three
+copies drifting apart.
+
 ## Notebooks vs. real modules
 
 | Still notebook-only | Promoted to a real module |
@@ -188,9 +224,12 @@ exactly how far this was verified to run in this environment.
 
 ## Tests
 
-`tests/test_store.py` and `tests/test_selection.py` are real `pytest` tests (40 total, all
-passing as of this writing — run `uv run pytest tests/ -v` to reproduce), added in round 2.
-They replace round 1's manual-script verification for these two modules:
+`uv run pytest tests/ -v` runs 61 tests, all passing as of this writing. `test_store.py`
+and `test_selection.py` (40 tests) were added in round 2 to replace round 1's manual-script
+verification; `test_mcp_tools.py` and `test_mcp_server.py` (16 tests) were added in round 3
+with the MCP server. All of them except `test_cli.py` run with just `pytest` (+ the
+lightweight `mcp` SDK for the two MCP files) — no ChromaDB, Groq key, network, or
+`questions_db.json`.
 
 - `test_store.py` exercises `memory/store.py` end to end against a fresh temp SQLite file
   per test (`tmp_path`, via the `db_path` parameter every `store` function already accepts)
@@ -216,7 +255,14 @@ They replace round 1's manual-script verification for these two modules:
   instead of looping, EOF-mid-answer still submitting what was typed) by monkeypatching
   `builtins.input`. It's the only I/O-free logic in `cli.py` — everything else in that file
   does real ChromaDB/Groq I/O, so it's verified by hand instead (see Known limitations).
-- None of the three test files require `GROQ_API_KEY`, network access, or
+- `test_mcp_tools.py` calls every MCP tool through `mcp_server/tools.py` with a fake
+  collection (returns a fixed candidate list) and a fake LLM (returns fixed content), plus a
+  temp SQLite file — covering topic accuracy roll-up, `get_interview_question` selection and
+  its empty-bank branch, `evaluate_answer` CORRECT/INCORRECT parsing and the persist-only-
+  when-scoped rule, and the spaced-repetition tools. `test_mcp_server.py` checks the FastMCP
+  registration (all nine tools, three resources, the prompt) and that a grading tool raises
+  a clear `GROQ_API_KEY` error when unset; it self-skips if the `mcp` SDK isn't installed.
+- None of the committed test files require `GROQ_API_KEY`, network access, or
   `questions_db.json`.
 
 ## Known limitations
